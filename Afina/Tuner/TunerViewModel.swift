@@ -2,10 +2,12 @@ import AfinaCore
 import Foundation
 import Observation
 
-/// Estado do afinador para a UI: permissão, dispositivos, nível de entrada e leitura de pitch.
+/// Estado do afinador para a UI: permissão, entrada de áudio, escolhas do utilizador e leitura atual.
 @Observable
 @MainActor
 final class TunerViewModel {
+    // MARK: Entrada
+
     private(set) var permission = MicrophonePermission.status
     private(set) var level = InputLevel.silence
     private(set) var devices: [AudioDevice] = []
@@ -13,22 +15,71 @@ final class TunerViewModel {
 
     let audioInput = AudioInput()
 
-    @ObservationIgnored private var deviceObserver: AudioDeviceChangeObserver?
-    @ObservationIgnored private var analyzer: PitchAnalyzer?
+    // MARK: Escolhas
 
-    /// Cadência de atualização da UI (~30 Hz).
-    private static let refreshInterval = Duration.milliseconds(33)
+    var mode = TunerMode.instrument {
+        didSet { progress.reset() }
+    }
 
-    var inputState: AudioInput.State { audioInput.state }
+    var instrument = Instrument.guitar {
+        didSet {
+            guard instrument != oldValue, let first = instrument.tunings.first else { return }
+            tuning = first
+        }
+    }
+
+    var tuning = Instrument.guitar.tunings[0] {
+        didSet { progress.reset() }
+    }
+
+    var capo = 0 {
+        didSet { progress.reset() }
+    }
+
+    var reference = ReferencePitch.standard {
+        didSet { analyzer?.reference = reference }
+    }
+
+    /// Lá de referência em Hz, para ligar diretamente a um `Stepper`.
+    var referenceFrequency: Double {
+        get { reference.a4 }
+        set { reference = ReferencePitch(a4: newValue) }
+    }
+
+    /// Desvio máximo (em cents) para considerar a nota afinada.
+    var tolerance = 3.0
+    var notation = NoteNotation.english
+
+    // MARK: Leitura
+
+    private(set) var progress = TuningProgress()
+
+    var activeTuning: Tuning { tuning.withCapo(atFret: capo) }
+
+    var target: TunerTarget? {
+        TunerTarget(reading: analysis?.reading, mode: mode, tuning: activeTuning, reference: reference)
+    }
+
+    var isSignalPresent: Bool { analysis?.isSignalPresent ?? false }
 
     var selectedDeviceUID: String? {
         get { audioInput.selectedDeviceUID }
         set { audioInput.selectedDeviceUID = newValue }
     }
 
+    var inputState: AudioInput.State { audioInput.state }
+
     var activeDevice: AudioDevice? {
         if case .running(let format) = audioInput.state { format.device } else { nil }
     }
+
+    // MARK: Ciclo de vida
+
+    @ObservationIgnored private var deviceObserver: AudioDeviceChangeObserver?
+    @ObservationIgnored private var analyzer: PitchAnalyzer?
+
+    /// Cadência de atualização da UI (~30 Hz).
+    private static let refreshInterval = Duration.milliseconds(33)
 
     /// Corre enquanto a vista estiver visível (usar com `.task`): o microfone só fica ligado
     /// durante esse tempo e desliga-se quando a tarefa é cancelada.
@@ -65,11 +116,13 @@ final class TunerViewModel {
             return
         }
         if analyzer?.sampleRate != format.sampleRate {
-            analyzer = PitchAnalyzer(sampleRate: format.sampleRate)
+            analyzer = PitchAnalyzer(sampleRate: format.sampleRate, reference: reference)
             audioInput.ringBuffer.discardAll()
         }
-        if let output = analyzer?.process(from: audioInput.ringBuffer) {
-            analysis = output
+        guard let output = analyzer?.process(from: audioInput.ringBuffer) else { return }
+        analysis = output
+        if mode == .instrument {
+            progress.update(with: target, tolerance: tolerance)
         }
     }
 

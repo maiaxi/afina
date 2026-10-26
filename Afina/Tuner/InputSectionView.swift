@@ -1,13 +1,12 @@
 import AfinaCore
 import SwiftUI
 
-/// Escolha do dispositivo de entrada, nível do sinal e leitura de pitch em bruto (para debug;
-/// o afinador propriamente dito vem na fase 4).
-struct InputMonitorView: View {
+/// Dispositivo de entrada, nível do sinal e avisos sobre a entrada.
+struct InputSectionView: View {
     @Bindable var tuner: TunerViewModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 8) {
             Picker("Entrada", selection: $tuner.selectedDeviceUID) {
                 Text("Predefinição do sistema").tag(String?.none)
                 ForEach(tuner.devices) { device in
@@ -16,8 +15,6 @@ struct InputMonitorView: View {
             }
 
             InputLevelMeterView(level: tuner.level)
-
-            pitchReadout
 
             if case .failed(let error) = tuner.inputState {
                 Label(message(for: error), systemImage: "exclamationmark.triangle")
@@ -31,21 +28,6 @@ struct InputMonitorView: View {
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
-        }
-    }
-
-    @ViewBuilder
-    private var pitchReadout: some View {
-        if let reading = tuner.analysis?.reading {
-            Text(verbatim: String(
-                format: "%@  %+.1f¢  ·  %.2f Hz",
-                reading.note.name(in: .english), reading.cents, reading.frequency
-            ))
-            .font(.title3.monospacedDigit())
-        } else {
-            Text("À espera de som…")
-                .font(.title3)
-                .foregroundStyle(.secondary)
         }
     }
 

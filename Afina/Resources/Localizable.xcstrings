@@ -24,6 +24,133 @@
     "Afina": {
       "shouldTranslate": false
     },
+    "Afinada": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In tune"
+          }
+        }
+      }
+    },
+    "Afinação": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuning"
+          }
+        }
+      }
+    },
+    "Baixo (4 cordas)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bass (4 strings)"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Baixo (5 cordas)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bass (5 strings)"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Barítono": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baritone"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Capotraste na casa %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capo on fret %lld"
+          }
+        }
+      }
+    },
+    "Cavaquinho": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cavaquinho"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Coimbra": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coimbra"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Cromático": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chromatic"
+          }
+        }
+      }
+    },
+    "DADGAD": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DADGAD"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Desvio": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deviation"
+          }
+        }
+      }
+    },
+    "Drop D": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drop D"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
     "Entrada": {
       "localizations": {
         "en": {
@@ -34,12 +161,86 @@
         }
       }
     },
+    "Guitarra": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guitar"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Guitarra portuguesa": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portuguese guitar"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Instrumento": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instrument"
+          }
+        }
+      }
+    },
+    "Lisboa": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisbon"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Lá = %lld Hz": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A = %lld Hz"
+          }
+        }
+      }
+    },
+    "Meio tom abaixo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Half step down"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
     "Microfones Bluetooth têm menos qualidade e mais latência. Para afinar, prefere o microfone interno ou uma interface de áudio.": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Bluetooth microphones have lower quality and more latency. For tuning, prefer the built-in microphone or an audio interface."
+          }
+        }
+      }
+    },
+    "Modo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mode"
           }
         }
       }
@@ -84,6 +285,39 @@
         }
       }
     },
+    "Open D": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open D"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Open E": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open E"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Open G": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open G"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
     "Para afinar, o Afina precisa de ouvir o teu instrumento. Ativa o acesso em Definições do Sistema → Privacidade e Segurança → Microfone.": {
       "localizations": {
         "en": {
@@ -123,6 +357,49 @@
           }
         }
       }
+    },
+    "Sem capotraste": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No capo"
+          }
+        }
+      }
+    },
+    "Standard": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standard"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Tom abaixo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whole step down"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Ukulele": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ukulele"
+          }
+        }
+      },
+      "extractionState": "manual"
     },
     "À espera de som…": {
       "localizations": {

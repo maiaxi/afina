@@ -15,7 +15,7 @@ struct MenuBarContentView: View {
             .keyboardShortcut("q")
         }
         .padding(20)
-        .frame(width: 300)
+        .frame(width: 320)
         // O microfone só está ativo com o popover aberto.
         .task { await tuner.run() }
     }
@@ -24,7 +24,9 @@ struct MenuBarContentView: View {
     private var content: some View {
         switch tuner.permission {
         case .authorized:
-            InputMonitorView(tuner: tuner)
+            TunerView(tuner: tuner)
+            Divider()
+            InputSectionView(tuner: tuner)
         case .denied, .restricted:
             MicrophonePermissionView()
         case .notDetermined:

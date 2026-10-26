@@ -127,12 +127,14 @@ guitar-app/
 **Aceitação:** erro < 1 cent em senos sintéticos de 40–1500 Hz; sem erros de oitava nos testes com harmónicos; estável (< ±2¢ de jitter) numa corda real sustentada.
 
 ### Fase 4 — UI do afinador (MVP)
-- [ ] `TunerViewModel` (`@Observable @MainActor`) que consome estimativas a ~30 fps
-- [ ] Vista principal: nota grande, oitava, frequência, agulha/barra de cents (±50¢), cor verde dentro de ±3¢ (tolerância configurável)
-- [ ] Modo cromático vs. modo instrumento (mostra as cordas, destaca a mais próxima, marca as já afinadas)
-- [ ] Seletores: instrumento, afinação, Lá de referência, capotraste
-- [ ] Estado "à espera de som" quando o gate está fechado
-- [ ] O motor só corre com o popover/janela abertos (poupar bateria e privacidade — indicador laranja do microfone)
+- [x] `TunerViewModel` (`@Observable @MainActor`) que consome estimativas a ~30 fps
+- [x] Vista principal: nota grande, oitava, frequência, agulha/barra de cents (±50¢), cor verde dentro de ±3¢ (tolerância configurável)
+- [x] Modo cromático vs. modo instrumento (mostra as cordas, destaca a mais próxima, marca as já afinadas)
+- [x] Seletores: instrumento, afinação, Lá de referência, capotraste
+- [x] Estado "à espera de som" quando o gate está fechado
+- [x] O motor só corre com o popover/janela abertos (poupar bateria e privacidade — indicador laranja do microfone)
+
+**Notas de implementação:** a lógica de modo/corda alvo (`TunerTarget`) e de cordas afinadas (`TuningProgress`: marca após 10 leituras seguidas dentro da tolerância, desmarca após 10 acima do dobro) está no `AfinaCore`. A tolerância (3¢) e a notação (C/Dó) já são propriedades do view model; os controlos ficam para as Definições (fase 6). Escolhas ainda não persistem (fase 6).
 
 **Aceitação:** afinar uma guitarra real do início ao fim só com a app, no popover da barra de menus.
 
