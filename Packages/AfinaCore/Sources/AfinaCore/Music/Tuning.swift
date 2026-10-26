@@ -1,3 +1,5 @@
+import Foundation
+
 /// Corda de uma afinação escolhida como a mais próxima de uma frequência.
 public struct StringMatch: Hashable, Sendable {
     /// Índice em `Tuning.notes`.
@@ -22,6 +24,15 @@ public struct Tuning: Identifiable, Hashable, Codable, Sendable {
         self.name = name
         self.notes = notes
     }
+
+    /// Afinações criadas pelo utilizador; o `name` delas é texto livre, não uma chave de localização.
+    public var isCustom: Bool { id.hasPrefix(Self.customPrefix) }
+
+    public static func custom(name: String, notes: [Note]) -> Tuning {
+        Tuning(id: customPrefix + UUID().uuidString, name: name, notes: notes)
+    }
+
+    private static let customPrefix = "custom."
 
     /// A mesma afinação com um capotraste na casa `fret` (0 = sem capotraste).
     public func withCapo(atFret fret: Int) -> Tuning {

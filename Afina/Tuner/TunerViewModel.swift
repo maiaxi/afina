@@ -21,14 +21,16 @@ final class TunerViewModel {
         didSet { progress.reset() }
     }
 
-    var instrument = Instrument.guitar {
+    /// Mudar de instrumento seleciona a primeira afinação dele.
+    var instrumentID = Instrument.guitar.id {
         didSet {
-            guard instrument != oldValue, let first = instrument.tunings.first else { return }
-            tuning = first
+            guard instrumentID != oldValue else { return }
+            tuningID = instrument.tunings.first?.id ?? tuningID
+            progress.reset()
         }
     }
 
-    var tuning = Instrument.guitar.tunings[0] {
+    var tuningID = Instrument.guitar.tunings[0].id {
         didSet { progress.reset() }
     }
 
@@ -50,9 +52,28 @@ final class TunerViewModel {
     var tolerance = 3.0
     var notation = NoteNotation.english
 
-    // MARK: Leitura
+    var gateThresholdDecibels: Float = -55 {
+        didSet { analyzer?.configuration.gateThresholdDecibels = gateThresholdDecibels }
+    }
 
-    private(set) var progress = TuningProgress()
+    private(set) var library = TuningLibrary()
+
+    var selectedDeviceUID: String? {
+        get { audioInput.selectedDeviceUID }
+        set { audioInput.selectedDeviceUID = newValue }
+    }
+
+    // MARK: Derivados
+
+    var instruments: [Instrument] { library.instruments }
+
+    var instrument: Instrument {
+        instruments.first { $0.id == instrumentID } ?? Instrument.guitar
+    }
+
+    var tuning: Tuning {
+        instrument.tunings.first { $0.id == tuningID } ?? instrument.tunings.first ?? Instrument.guitar.tunings[0]
+    }
 
     var activeTuning: Tuning { tuning.withCapo(atFret: capo) }
 
@@ -60,12 +81,9 @@ final class TunerViewModel {
         TunerTarget(reading: analysis?.reading, mode: mode, tuning: activeTuning, reference: reference)
     }
 
-    var isSignalPresent: Bool { analysis?.isSignalPresent ?? false }
+    private(set) var progress = TuningProgress()
 
-    var selectedDeviceUID: String? {
-        get { audioInput.selectedDeviceUID }
-        set { audioInput.selectedDeviceUID = newValue }
-    }
+    var isSignalPresent: Bool { analysis?.isSignalPresent ?? false }
 
     var inputState: AudioInput.State { audioInput.state }
 
@@ -73,22 +91,94 @@ final class TunerViewModel {
         if case .running(let format) = audioInput.state { format.device } else { nil }
     }
 
+    // MARK: Preferências
+
+    init(preferences: TunerPreferences = TunerPreferences()) {
+        library = preferences.library
+        mode = preferences.mode
+        instrumentID = preferences.instrumentID
+        tuningID = preferences.tuningID
+        capo = preferences.capo
+        reference = ReferencePitch(a4: preferences.referenceA4)
+        tolerance = preferences.tolerance
+        notation = preferences.notation
+        gateThresholdDecibels = preferences.gateThresholdDecibels
+        audioInput.selectedDeviceUID = preferences.inputDeviceUID
+    }
+
+    var preferences: TunerPreferences {
+        var preferences = TunerPreferences()
+        preferences.mode = mode
+        preferences.instrumentID = instrumentID
+        preferences.tuningID = tuning.id
+        preferences.capo = capo
+        preferences.referenceA4 = reference.a4
+        preferences.tolerance = tolerance
+        preferences.notation = notation
+        preferences.inputDeviceUID = selectedDeviceUID
+        preferences.gateThresholdDecibels = gateThresholdDecibels
+        preferences.library = library
+        return preferences
+    }
+
+    // MARK: Afinações personalizadas
+
+    func addCustomTuning(_ tuning: Tuning, to instrumentID: String) {
+        library.add(tuning, to: instrumentID)
+    }
+
+    func updateCustomTuning(_ tuning: Tuning) {
+        library.update(tuning)
+        if tuning.id == tuningID { progress.reset() }
+    }
+
+    func removeCustomTuning(id: String) {
+        library.remove(tuningID: id)
+        if id == tuningID { tuningID = instrument.tunings.first?.id ?? tuningID }
+    }
+
     // MARK: Ciclo de vida
 
     @ObservationIgnored private var deviceObserver: AudioDeviceChangeObserver?
     @ObservationIgnored private var analyzer: PitchAnalyzer?
+    @ObservationIgnored private var viewerCount = 0
+    @ObservationIgnored private var monitoringTask: Task<Void, Never>?
+    @ObservationIgnored private var finishingTask: Task<Void, Never>?
 
     /// Cadência de atualização da UI (~30 Hz).
     private static let refreshInterval = Duration.milliseconds(33)
 
-    /// Corre enquanto a vista estiver visível (usar com `.task`): o microfone só fica ligado
-    /// durante esse tempo e desliga-se quando a tarefa é cancelada.
+    /// Chamar com `.task` em cada vista que mostra o afinador (popover, janela, Definições).
+    /// O microfone fica ligado enquanto houver pelo menos uma visível.
     func run() async {
+        viewerCount += 1
+        if viewerCount == 1 {
+            // Espera que a monitorização anterior acabe de desligar antes de voltar a ligar
+            let previous = finishingTask
+            monitoringTask = Task {
+                await previous?.value
+                await monitor()
+            }
+        }
+
+        while !Task.isCancelled {
+            try? await Task.sleep(for: .seconds(3600))
+        }
+
+        viewerCount -= 1
+        if viewerCount == 0 {
+            monitoringTask?.cancel()
+            finishingTask = monitoringTask
+            monitoringTask = nil
+        }
+    }
+
+    private func monitor() async {
         if MicrophonePermission.status == .notDetermined {
             _ = await MicrophonePermission.request()
         }
         permission = MicrophonePermission.status
-        guard permission == .authorized else { return }
+        guard permission == .authorized, !Task.isCancelled else { return }
 
         refreshDevices()
         deviceObserver = AudioDeviceChangeObserver { [weak self] in self?.refreshDevices() }
@@ -116,7 +206,9 @@ final class TunerViewModel {
             return
         }
         if analyzer?.sampleRate != format.sampleRate {
-            analyzer = PitchAnalyzer(sampleRate: format.sampleRate, reference: reference)
+            var configuration = PitchAnalyzer.Configuration()
+            configuration.gateThresholdDecibels = gateThresholdDecibels
+            analyzer = PitchAnalyzer(sampleRate: format.sampleRate, reference: reference, configuration: configuration)
             audioInput.ringBuffer.discardAll()
         }
         guard let output = analyzer?.process(from: audioInput.ringBuffer) else { return }

@@ -18,6 +18,9 @@ struct MetronomeView: View {
                 currentPulse: metronome.currentPulse,
                 onSelect: engine.cycleSound(atPulse:)
             )
+            .contextMenu {
+                Button("Repor acentos") { engine.resetBeatPattern() }
+            }
 
             bpmControls
 

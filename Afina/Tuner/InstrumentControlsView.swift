@@ -7,15 +7,15 @@ struct InstrumentControlsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Picker("Instrumento", selection: $tuner.instrument) {
-                ForEach(Instrument.builtIn) { instrument in
-                    Text(LocalizedStringKey(instrument.name)).tag(instrument)
+            Picker("Instrumento", selection: $tuner.instrumentID) {
+                ForEach(tuner.instruments) { instrument in
+                    Text(LocalizedStringKey(instrument.name)).tag(instrument.id)
                 }
             }
 
-            Picker("Afinação", selection: $tuner.tuning) {
+            Picker("Afinação", selection: $tuner.tuningID) {
                 ForEach(tuner.instrument.tunings) { tuning in
-                    Text(LocalizedStringKey(tuning.name)).tag(tuning)
+                    TuningName(tuning: tuning).tag(tuning.id)
                 }
             }
 
@@ -26,6 +26,19 @@ struct InstrumentControlsView: View {
                     Text("Capotraste na casa \(tuner.capo)")
                 }
             }
+        }
+    }
+}
+
+/// Nome de uma afinação: traduzido nas pré-definidas, tal como escrito nas personalizadas.
+struct TuningName: View {
+    let tuning: Tuning
+
+    var body: some View {
+        if tuning.isCustom {
+            Text(verbatim: tuning.name)
+        } else {
+            Text(LocalizedStringKey(tuning.name))
         }
     }
 }

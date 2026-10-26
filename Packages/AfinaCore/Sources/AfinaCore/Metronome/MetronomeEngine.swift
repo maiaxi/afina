@@ -19,20 +19,33 @@ public final class MetronomeEngine {
         }
     }
 
-    /// Mudar de compasso repõe o padrão de sons por defeito desse compasso.
     public var timeSignature = TimeSignature.fourFour {
         didSet {
             let index = TimeSignature.all.firstIndex(of: timeSignature) ?? 0
             parameters.timeSignatureIndex.store(index, ordering: .relaxed)
-            if timeSignature != oldValue {
-                beatPattern = BeatPattern(defaultFor: timeSignature)
-            }
+            publishBeatPattern()
         }
     }
 
-    /// Som de cada pulso do compasso; as alterações ouvem-se a partir do pulso seguinte.
-    public private(set) var beatPattern = BeatPattern(defaultFor: .fourFour) {
-        didSet { parameters.beatPattern.store(beatPattern.packed, ordering: .relaxed) }
+    /// Padrões alterados pelo utilizador, por compasso (`TimeSignature.id`). Cada compasso
+    /// lembra o seu; os que não estão aqui usam o padrão por defeito.
+    public var customBeatPatterns: [String: BeatPattern] = [:] {
+        didSet { publishBeatPattern() }
+    }
+
+    /// Som de cada pulso do compasso atual; as alterações ouvem-se a partir do pulso seguinte.
+    public var beatPattern: BeatPattern {
+        if let custom = customBeatPatterns[timeSignature.id], custom.sounds.count == timeSignature.beats {
+            return custom
+        }
+        return BeatPattern(defaultFor: timeSignature)
+    }
+
+    public var clickSound = ClickSound.beep {
+        didSet {
+            let index = ClickSound.allCases.firstIndex(of: clickSound) ?? 0
+            parameters.clickSound.store(index, ordering: .relaxed)
+        }
     }
 
     public var subdivision = Subdivision.none {
@@ -90,8 +103,19 @@ public final class MetronomeEngine {
 
     /// Passa o pulso para o som seguinte do ciclo (acento → tempo → fraco → silêncio).
     public func cycleSound(atPulse pulse: Int) {
-        guard beatPattern.sounds.indices.contains(pulse) else { return }
-        beatPattern[pulse] = beatPattern[pulse].next
+        var pattern = beatPattern
+        guard pattern.sounds.indices.contains(pulse) else { return }
+        pattern[pulse] = pattern[pulse].next
+        customBeatPatterns[timeSignature.id] = pattern
+    }
+
+    /// Volta ao padrão por defeito do compasso atual.
+    public func resetBeatPattern() {
+        customBeatPatterns[timeSignature.id] = nil
+    }
+
+    private func publishBeatPattern() {
+        parameters.beatPattern.store(beatPattern.packed, ordering: .relaxed)
     }
 
     public func toggle() {

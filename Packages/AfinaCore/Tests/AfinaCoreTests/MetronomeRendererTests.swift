@@ -113,6 +113,14 @@ struct MetronomeRendererTests {
         #expect(metronome.onsets.map { metronome.kind(at: $0) } == [.accent, .weakBeat, .accent])
     }
 
+    @Test func woodSoundKeepsTimingAndAccents() {
+        let metronome = OfflineMetronome(bpm: 120, signature: .threeFour)
+        metronome.parameters.clickSound.store(ClickSound.allCases.firstIndex(of: .wood) ?? 0, ordering: .relaxed)
+        metronome.render(seconds: 2)
+        #expect(metronome.onsets == [0, 24_000, 48_000, 72_000])
+        #expect(metronome.onsets.map { metronome.kind(at: $0) } == [.accent, .beat, .beat, .accent])
+    }
+
     @Test func tripletsSplitEachPulse() {
         let metronome = OfflineMetronome(bpm: 60, subdivision: .three)
         metronome.render(seconds: 2)
@@ -206,6 +214,17 @@ struct ClickSynthTests {
             let difference = LevelMeter.decibelsFullScale(louder.amplitude) - LevelMeter.decibelsFullScale(softer.amplitude)
             #expect(difference >= 1.9, "\(louder) → \(softer): \(difference) dB")
             #expect(louder.frequency > softer.frequency)
+        }
+    }
+}
+
+extension ClickSynthTests {
+    @Test(arguments: ClickSound.allCases)
+    func clicksPeakAtTheirAmplitude(sound: ClickSound) {
+        for kind in ClickKind.allCases {
+            let click = ClickSynth.click(kind, sound: sound, sampleRate: 48_000)
+            #expect(abs((click.map(abs).max() ?? 0) - kind.amplitude) < 1e-5)
+            #expect(click[0] != 0)
         }
     }
 }

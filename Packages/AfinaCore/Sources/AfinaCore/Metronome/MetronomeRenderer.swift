@@ -8,6 +8,8 @@ final class MetronomeParameters: Sendable {
     let timeSignatureIndex = Atomic<Int>(2)
     let subdivision = Atomic<Int>(1)
     let volume = AtomicFloat(0.8)
+    /// Índice em `ClickSound.allCases`.
+    let clickSound = Atomic<Int>(0)
     let beatPattern = Atomic<UInt64>(BeatPattern(defaultFor: .fourFour).packed)
     let isPlaying = Atomic<Bool>(false)
     /// Incrementado a cada arranque: o renderer recomeça o compasso quando o vê mudar.
@@ -53,17 +55,23 @@ final class MetronomeRenderer: @unchecked Sendable {
     private var activeTimeSignature = 0
     private var activeSubdivision = 1
     private var activeClick = -1
+    private var activeSound = 0
     private var clickPosition = 0
+
+    private static let kindCount = ClickKind.allCases.count
 
     init(parameters: MetronomeParameters, sampleRate: Double) {
         self.parameters = parameters
         self.sampleRate = sampleRate
 
         clickLength = ClickSynth.length(sampleRate: sampleRate)
-        clicks = .allocate(capacity: ClickKind.allCases.count * clickLength)
-        for kind in ClickKind.allCases {
-            let samples = ClickSynth.click(kind, sampleRate: sampleRate)
-            (clicks + kind.rawValue * clickLength).initialize(from: samples, count: clickLength)
+        clicks = .allocate(capacity: ClickSound.allCases.count * Self.kindCount * clickLength)
+        for (soundIndex, sound) in ClickSound.allCases.enumerated() {
+            for kind in ClickKind.allCases {
+                let samples = ClickSynth.click(kind, sound: sound, sampleRate: sampleRate)
+                let offset = (soundIndex * Self.kindCount + kind.rawValue) * clickLength
+                (clicks + offset).initialize(from: samples, count: clickLength)
+            }
         }
 
         let signatures = TimeSignature.all
@@ -95,6 +103,8 @@ final class MetronomeRenderer: @unchecked Sendable {
         }
 
         var volume = parameters.volume.load()
+        let sound = parameters.clickSound.load(ordering: .relaxed)
+        if (0..<ClickSound.allCases.count).contains(sound) { activeSound = sound }
         var frame = 0
         while true {
             let onsetFrame = Int(nextOnset - bufferStart)
@@ -173,7 +183,7 @@ final class MetronomeRenderer: @unchecked Sendable {
     ) {
         guard activeClick >= 0, end > start else { return }
         let count = min(end - start, clickLength - clickPosition)
-        let source = clicks + activeClick * clickLength + clickPosition
+        let source = clicks + (activeSound * Self.kindCount + activeClick) * clickLength + clickPosition
         vDSP_vsmul(source, 1, &volume, output + start, 1, vDSP_Length(count))
         clickPosition += count
         if clickPosition >= clickLength { activeClick = -1 }

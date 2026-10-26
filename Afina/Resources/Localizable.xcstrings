@@ -11,12 +11,32 @@
         }
       }
     },
+    "Abaixo deste nível o afinador fica à espera de som. Sobe-o se o ruído da sala aparecer como notas; desce-o se o instrumento não for detetado.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Below this level the tuner waits for sound. Raise it if room noise shows up as notes; lower it if your instrument isn't detected."
+          }
+        }
+      }
+    },
     "Abrir Definições do Sistema": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Open System Settings"
+          }
+        }
+      }
+    },
+    "Abrir em janela": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open in window"
           }
         }
       }
@@ -60,6 +80,56 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tuning"
+          }
+        }
+      }
+    },
+    "Afinações": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tunings"
+          }
+        }
+      }
+    },
+    "Afinações personalizadas": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom tunings"
+          }
+        }
+      }
+    },
+    "Ainda não há afinações personalizadas para este instrumento.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No custom tunings for this instrument yet."
+          }
+        }
+      }
+    },
+    "Apagar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
+          }
+        }
+      }
+    },
+    "Apagar esta afinação?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete this tuning?"
           }
         }
       }
@@ -109,6 +179,26 @@
         }
       },
       "extractionState": "manual"
+    },
+    "Bip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beep"
+          }
+        }
+      }
+    },
+    "Cancelar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
     },
     "Capotraste na casa %lld": {
       "localizations": {
@@ -162,6 +252,26 @@
         }
       }
     },
+    "Corda %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "String %lld"
+          }
+        }
+      }
+    },
+    "Cordas": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Strings"
+          }
+        }
+      }
+    },
     "Cromático": {
       "localizations": {
         "en": {
@@ -183,12 +293,42 @@
       },
       "extractionState": "manual"
     },
+    "Definições": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        }
+      }
+    },
+    "Definições do Afina": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afina Settings"
+          }
+        }
+      }
+    },
     "Desvio": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Deviation"
+          }
+        }
+      }
+    },
+    "Desvio máximo para a nota ficar verde e a corda contar como afinada.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maximum deviation for the note to turn green and the string to count as tuned."
           }
         }
       }
@@ -213,6 +353,16 @@
         }
       },
       "extractionState": "manual"
+    },
+    "Editar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit"
+          }
+        }
+      }
     },
     "Em 2": {
       "localizations": {
@@ -254,6 +404,26 @@
         }
       }
     },
+    "Geral": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "General"
+          }
+        }
+      }
+    },
+    "Guardar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
+          }
+        }
+      }
+    },
     "Guitarra": {
       "localizations": {
         "en": {
@@ -286,6 +456,16 @@
         }
       }
     },
+    "Limiar de som": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sound threshold"
+          }
+        }
+      }
+    },
     "Lisboa": {
       "localizations": {
         "en": {
@@ -303,6 +483,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "A = %lld Hz"
+          }
+        }
+      }
+    },
+    "Madeira": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wood"
           }
         }
       }
@@ -348,6 +538,16 @@
         }
       }
     },
+    "Mostrar na Dock": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show in Dock"
+          }
+        }
+      }
+    },
     "Nenhum dispositivo de entrada disponível.": {
       "localizations": {
         "en": {
@@ -368,12 +568,62 @@
         }
       }
     },
+    "Nome": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name"
+          }
+        }
+      }
+    },
+    "Nomes das notas": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Note names"
+          }
+        }
+      }
+    },
+    "Nota": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Note"
+          }
+        }
+      }
+    },
+    "Nova afinação…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New tuning…"
+          }
+        }
+      }
+    },
     "Não foi possível iniciar o áudio.": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Could not start audio."
+          }
+        }
+      }
+    },
+    "Nível atual": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current level"
           }
         }
       }
@@ -394,6 +644,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "The input device is not available."
+          }
+        }
+      }
+    },
+    "Oitava": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Octave"
           }
         }
       }
@@ -451,12 +711,32 @@
         }
       }
     },
+    "Por exemplo, Open C": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For example, Open C"
+          }
+        }
+      }
+    },
     "Predefinição do sistema": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "System default"
+          }
+        }
+      }
+    },
+    "Repor acentos": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset accents"
           }
         }
       }
@@ -507,6 +787,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Silent"
+          }
+        }
+      }
+    },
+    "Som do clique": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click sound"
           }
         }
       }
@@ -571,6 +861,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Play"
+          }
+        }
+      }
+    },
+    "Tolerância: ±%lld cents": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tolerance: ±%lld cents"
           }
         }
       }

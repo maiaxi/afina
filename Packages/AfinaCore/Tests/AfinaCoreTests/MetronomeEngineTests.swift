@@ -28,6 +28,26 @@ struct MetronomeEngineTests {
         engine.cycleSound(atPulse: 9) // fora do compasso: ignorado
         engine.timeSignature = .sixEight
         #expect(engine.beatPattern == BeatPattern(defaultFor: .sixEight))
+        // Cada compasso lembra o seu padrão
+        engine.timeSignature = .fourFour
+        #expect(engine.beatPattern.sounds == [.accent, .weakBeat, .beat, .beat])
+        engine.resetBeatPattern()
+        #expect(engine.beatPattern == BeatPattern(defaultFor: .fourFour))
+    }
+
+    @Test func preferencesRoundTrip() {
+        let engine = MetronomeEngine()
+        engine.bpm = 87
+        engine.timeSignature = .sevenEight
+        engine.subdivision = .three
+        engine.volume = 0.4
+        engine.clickSound = .wood
+        engine.cycleSound(atPulse: 0)
+
+        let restored = MetronomeEngine()
+        restored.apply(engine.preferences)
+        #expect(restored.preferences == engine.preferences)
+        #expect(restored.beatPattern == engine.beatPattern)
     }
 
     @Test func notPlayingHasNoPosition() {

@@ -31,7 +31,15 @@ public enum ClickKind: Int, CaseIterable, Sendable {
     }
 }
 
-/// Sons de clique sintetizados: cosseno curto com ataque linear de 1 ms e decaimento exponencial.
+/// Timbre dos cliques.
+public enum ClickSound: String, CaseIterable, Codable, Sendable {
+    /// Cosseno curto: limpo e agudo.
+    case beep
+    /// Parciais inarmónicos com decaimento rápido, lembra um bloco de madeira.
+    case wood
+}
+
+/// Sons de clique sintetizados, normalizados para o pico ser exatamente `kind.amplitude`.
 /// A primeira amostra nunca é zero, o que torna o início de cada clique fácil de medir nos testes.
 public enum ClickSynth {
     public static let duration = 0.03
@@ -40,14 +48,44 @@ public enum ClickSynth {
         Int((duration * sampleRate).rounded())
     }
 
-    public static func click(_ kind: ClickKind, sampleRate: Double) -> [Float] {
+    public static func click(_ kind: ClickKind, sound: ClickSound = .beep, sampleRate: Double) -> [Float] {
         let length = length(sampleRate: sampleRate)
-        let attack = max(1, Int(0.001 * sampleRate))
-        let decayTime = 0.008
-        return (0..<length).map { index in
+        let attack = max(1, Int(attackTime(sound) * sampleRate))
+        let decayTime = decayTime(sound)
+        let raw: [Double] = (0..<length).map { index in
             let time = Double(index) / sampleRate
-            let envelope = index < attack ? Double(index + 1) / Double(attack) : exp(-(time - Double(attack) / sampleRate) / decayTime)
-            return kind.amplitude * Float(envelope * cos(2 * .pi * kind.frequency * time))
+            let envelope = index < attack
+                ? Double(index + 1) / Double(attack)
+                : exp(-(time - Double(attack) / sampleRate) / decayTime)
+            return envelope * waveform(sound, frequency: kind.frequency, time: time)
+        }
+        let peak = raw.map(abs).max() ?? 1
+        return raw.map { kind.amplitude * Float($0 / peak) }
+    }
+
+    private static func attackTime(_ sound: ClickSound) -> Double {
+        switch sound {
+        case .beep: 0.001
+        case .wood: 0.0003
+        }
+    }
+
+    private static func decayTime(_ sound: ClickSound) -> Double {
+        switch sound {
+        case .beep: 0.008
+        case .wood: 0.004
+        }
+    }
+
+    private static func waveform(_ sound: ClickSound, frequency: Double, time: Double) -> Double {
+        switch sound {
+        case .beep:
+            cos(2 * .pi * frequency * time)
+        case .wood:
+            // Parciais de uma barra livre (1 : 2,76 : 5,40), uma oitava acima para soar a "toc"
+            cos(2 * .pi * 2 * frequency * time)
+                + 0.5 * cos(2 * .pi * 2 * 2.76 * frequency * time)
+                + 0.25 * cos(2 * .pi * 2 * 5.40 * frequency * time)
         }
     }
 }
