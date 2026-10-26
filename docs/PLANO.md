@@ -80,17 +80,19 @@ guitar-app/
 **Aceitação:** a app arranca, aparece um ícone na barra de menus, e abre um popover vazio.
 
 ### Fase 1 — Modelo musical (`AfinaCore/Music`)
-- [ ] `Note` (classe de altura + oitava, nomes em notação latina e anglo-saxónica: Dó/C, Ré/D…)
-- [ ] Conversões: frequência ↔ número MIDI ↔ nota + desvio em cents, com Lá de referência configurável (415–466 Hz)
-- [ ] `Instrument` e `Tuning` (`Codable`, `Identifiable`), com afinações pré-definidas:
+- [x] `Note` (classe de altura + oitava, nomes em notação latina e anglo-saxónica: Dó/C, Ré/D…)
+- [x] Conversões: frequência ↔ número MIDI ↔ nota + desvio em cents, com Lá de referência configurável (415–466 Hz)
+- [x] `Instrument` e `Tuning` (`Codable`, `Identifiable`), com afinações pré-definidas:
   - Guitarra: Standard (E A D G B E), Drop D, Meio tom abaixo, Tom abaixo, DADGAD, Open G, Open D, Open E
-  - Baixo 4 e 5 cordas: Standard, Drop D
+  - Baixo 4 e 5 cordas: Standard, Drop D (no de 5 cordas: B D A D G — mantém o Si grave, porque o Lá0 fica abaixo dos 30 Hz)
   - Ukulele: Standard (G C E A), Baritono (D G B E)
   - Cavaquinho: Standard (D G B D)
-  - Guitarra portuguesa: Lisboa (D A B E A B), Coimbra (C G A D G A) — confirmar convenção de oitavas
-- [ ] Capotraste: transpõe as notas alvo N meios-tons
-- [ ] Deteção da corda mais próxima numa afinação
-- [ ] Testes unitários para tudo acima
+  - Guitarra portuguesa: Lisboa (D A B E A B), Coimbra (C G A D G A) — uma nota por ordem, da 6.ª para a 1.ª: Lisboa D3 A3 B3 E4 A4 B4; nas ordens 4–6 (pares à oitava) usa-se a corda mais grave
+- [x] Capotraste: transpõe as notas alvo N meios-tons
+- [x] Deteção da corda mais próxima numa afinação
+- [x] Testes unitários para tudo acima
+
+**Notas de implementação:** notação científica (C4 = MIDI 60); alterações sempre em sustenido; os nomes das afinações/instrumentos pré-definidos são chaves de localização pt-PT, a traduzir no `Localizable.xcstrings` da app quando forem mostrados (fase 4).
 
 **Aceitação:** `440 Hz → A4 +0¢`, `82,41 Hz → E2 ±0,1¢`, `A4=432 → 432 Hz é A4 +0¢`; afinações serializam/desserializam sem perdas.
 
