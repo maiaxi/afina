@@ -9,10 +9,13 @@ import Observation
 public final class MetronomeEngine {
     public static let bpmRange: ClosedRange<Double> = 20...300
 
-    public var bpm = 120.0 {
-        didSet {
-            bpm = min(max(bpm, Self.bpmRange.lowerBound), Self.bpmRange.upperBound)
-            parameters.bpm = bpm
+    // Valores limitados com armazenamento à parte: com `@Observable`, reatribuir a propriedade
+    // dentro do próprio `didSet` volta a chamar o setter e entra em recursão infinita.
+    public var bpm: Double {
+        get { storedBPM }
+        set {
+            storedBPM = min(max(newValue, Self.bpmRange.lowerBound), Self.bpmRange.upperBound)
+            parameters.bpm = storedBPM
         }
     }
 
@@ -28,12 +31,16 @@ public final class MetronomeEngine {
     }
 
     /// 0–1.
-    public var volume: Float = 0.8 {
-        didSet {
-            volume = min(max(volume, 0), 1)
-            parameters.volume.store(volume)
+    public var volume: Float {
+        get { storedVolume }
+        set {
+            storedVolume = min(max(newValue, 0), 1)
+            parameters.volume.store(storedVolume)
         }
     }
+
+    private var storedBPM = 120.0
+    private var storedVolume: Float = 0.8
 
     public private(set) var isPlaying = false
     /// Descrição do último erro ao arrancar o áudio, se houver.
