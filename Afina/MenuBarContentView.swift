@@ -33,6 +33,9 @@ struct MenuBarContentView: View {
         }
         .padding(20)
         .frame(width: 320)
+        .onChange(of: model.tunerRequestCount) {
+            if isDetached { section = .tuner }
+        }
     }
 
     private var footer: some View {

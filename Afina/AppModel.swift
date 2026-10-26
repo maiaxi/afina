@@ -14,18 +14,62 @@ final class AppModel {
         didSet { Self.applyActivationPolicy(showInDock: showInDock) }
     }
 
+    /// Atalhos globais por ação; ações sem entrada usam o atalho por defeito.
+    var shortcuts: [ShortcutAction: GlobalShortcut] {
+        didSet { registerShortcuts() }
+    }
+
+    /// Ações cujo atalho está ocupado por outra app.
+    private(set) var conflictingShortcuts: Set<ShortcutAction> = []
+
+    /// Incrementado quando um atalho pede o afinador; a janela muda para esse separador.
+    private(set) var tunerRequestCount = 0
+
+    /// Abre janelas a partir de fora das vistas (atalhos globais). Definido pela etiqueta da
+    /// barra de menus, que existe sempre.
+    @ObservationIgnored var openWindow: ((String) -> Void)?
+
     @ObservationIgnored private let store = PreferencesStore()
+    @ObservationIgnored private let hotKeys = GlobalHotKeyCenter()
 
     init() {
         tuner = TunerViewModel(preferences: store.load(TunerPreferences.self, key: .tuner) ?? TunerPreferences())
         metronome = MetronomeViewModel()
         metronome.engine.apply(store.load(MetronomePreferences.self, key: .metronome) ?? MetronomePreferences())
         showInDock = store.load(Bool.self, key: .showInDock) ?? false
+        let savedShortcuts = store.load([String: GlobalShortcut].self, key: .shortcuts) ?? [:]
+        shortcuts = Dictionary(uniqueKeysWithValues: ShortcutAction.allCases.map { action in
+            (action, savedShortcuts[action.rawValue] ?? action.defaultShortcut)
+        })
 
         let store = store
         observeChanges(of: { [tuner] in tuner.preferences }) { store.save($0, key: .tuner) }
         observeChanges(of: { [metronome] in metronome.engine.preferences }) { store.save($0, key: .metronome) }
         observeChanges(of: { [weak self] in self?.showInDock ?? false }) { store.save($0, key: .showInDock) }
+        observeChanges(of: { [weak self] in self?.shortcuts ?? [:] }) { shortcuts in
+            store.save(Dictionary(uniqueKeysWithValues: shortcuts.map { ($0.key.rawValue, $0.value) }), key: .shortcuts)
+        }
+
+        hotKeys.onAction = { [weak self] action in self?.perform(action) }
+        registerShortcuts()
+    }
+
+    private func registerShortcuts() {
+        hotKeys.register(shortcuts)
+        conflictingShortcuts = hotKeys.failedActions
+    }
+
+    private func perform(_ action: ShortcutAction) {
+        switch action {
+        case .toggleMetronome:
+            metronome.togglePlayback()
+        case .tapTempo:
+            metronome.tap()
+        case .openTuner:
+            tunerRequestCount += 1
+            openWindow?(WindowID.main)
+            NSApplication.shared.activate()
+        }
     }
 
     static func applyActivationPolicy(showInDock: Bool) {
@@ -36,7 +80,7 @@ final class AppModel {
 /// Preferências guardadas em `UserDefaults` como JSON.
 struct PreferencesStore {
     enum Key: String {
-        case tuner, metronome, showInDock
+        case tuner, metronome, showInDock, shortcuts
     }
 
     var defaults = UserDefaults.standard

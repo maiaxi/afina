@@ -19,6 +19,9 @@ struct SettingsView: View {
             Tab("Metrónomo", systemImage: "metronome") {
                 MetronomeSettingsView(engine: model.metronome.engine)
             }
+            Tab("Atalhos", systemImage: "keyboard") {
+                ShortcutsSettingsView(model: model)
+            }
         }
         .frame(width: 480)
     }

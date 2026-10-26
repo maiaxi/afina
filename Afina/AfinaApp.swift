@@ -10,8 +10,7 @@ struct AfinaApp: App {
         MenuBarExtra {
             MenuBarContentView(model: model, isDetached: false)
         } label: {
-            Image(systemName: model.metronome.engine.isPlaying ? "metronome.fill" : "tuningfork")
-                .accessibilityLabel(Text(verbatim: "Afina"))
+            MenuBarLabel(model: model)
         }
         .menuBarExtraStyle(.window)
 
@@ -29,6 +28,21 @@ struct AfinaApp: App {
     }
 }
 
+/// Ícone da barra de menus: mostra um metrónomo enquanto este toca. Como existe sempre, é também
+/// por aqui que o `AppModel` recebe a ação de abrir janelas (usada pelos atalhos globais).
+private struct MenuBarLabel: View {
+    let model: AppModel
+    @Environment(\.openWindow) private var openWindow
+
+    var body: some View {
+        Image(systemName: model.metronome.engine.isPlaying ? "metronome.fill" : "tuningfork")
+            .accessibilityLabel(Text(verbatim: "Afina"))
+            .onAppear {
+                model.openWindow = { id in openWindow(id: id) }
+            }
+    }
+}
+
 enum WindowID {
     static let main = "main"
     static let settings = "settings"
@@ -38,7 +52,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         // O Info.plist arranca sem Dock (LSUIElement); aplica-se aqui a preferência guardada.
         let showInDock = PreferencesStore().load(Bool.self, key: .showInDock) ?? false
-        MainActor.assumeIsolated { AppModel.applyActivationPolicy(showInDock: showInDock) }
+        AppModel.applyActivationPolicy(showInDock: showInDock)
     }
 
     /// Com a app na Dock, fechar a última janela não a termina: continua na barra de menus.

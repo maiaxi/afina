@@ -41,6 +41,16 @@
         }
       }
     },
+    "Abrir o afinador": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open the tuner"
+          }
+        }
+      }
+    },
     "Acento": {
       "localizations": {
         "en": {
@@ -130,6 +140,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Delete this tuning?"
+          }
+        }
+      }
+    },
+    "Atalhos": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shortcuts"
           }
         }
       }
@@ -404,6 +424,26 @@
         }
       }
     },
+    "Este atalho já está a ser usado por outra app. Escolhe outra combinação.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This shortcut is already used by another app. Choose another combination."
+          }
+        }
+      }
+    },
+    "Funcionam em qualquer app, mesmo com o Afina em segundo plano.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "They work in any app, even with Afina in the background."
+          }
+        }
+      }
+    },
     "Geral": {
       "localizations": {
         "en": {
@@ -524,6 +564,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bluetooth microphones have lower quality and more latency. For tuning, prefer the built-in microphone or an audio interface."
+          }
+        }
+      }
+    },
+    "Modificadores": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifiers"
           }
         }
       }
@@ -825,6 +875,26 @@
     "Tap": {
       "shouldTranslate": false
     },
+    "Tap tempo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap tempo"
+          }
+        }
+      }
+    },
+    "Tecla": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key"
+          }
+        }
+      }
+    },
     "Tempo %lld": {
       "localizations": {
         "en": {
@@ -861,6 +931,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Play"
+          }
+        }
+      }
+    },
+    "Tocar/parar o metrónomo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play/stop the metronome"
           }
         }
       }
