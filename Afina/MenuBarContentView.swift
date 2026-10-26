@@ -1,14 +1,13 @@
+import AfinaCore
 import SwiftUI
 
-/// Conteúdo do popover da barra de menus. Placeholder até à fase 4.
+/// Conteúdo do popover da barra de menus.
 struct MenuBarContentView: View {
+    let tuner: TunerViewModel
+
     var body: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "tuningfork")
-                .font(.system(size: 40))
-                .foregroundStyle(.secondary)
-            Text("Afinador e metrónomo em breve")
-                .font(.headline)
+        VStack(spacing: 16) {
+            content
             Divider()
             Button("Sair do Afina") {
                 NSApplication.shared.terminate(nil)
@@ -16,10 +15,20 @@ struct MenuBarContentView: View {
             .keyboardShortcut("q")
         }
         .padding(20)
-        .frame(width: 280)
+        .frame(width: 300)
+        // O microfone só está ativo com o popover aberto.
+        .task { await tuner.run() }
     }
-}
 
-#Preview {
-    MenuBarContentView()
+    @ViewBuilder
+    private var content: some View {
+        switch tuner.permission {
+        case .authorized:
+            InputMonitorView(tuner: tuner)
+        case .denied, .restricted:
+            MicrophonePermissionView()
+        case .notDetermined:
+            ProgressView("A pedir acesso ao microfone…")
+        }
+    }
 }

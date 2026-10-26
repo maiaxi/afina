@@ -1,29 +1,129 @@
 {
-  "sourceLanguage" : "pt-PT",
-  "strings" : {
-    "Afina" : {
-      "shouldTranslate" : false
-    },
-    "Afinador e metrónomo em breve" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tuner and metronome coming soon"
+  "sourceLanguage": "pt-PT",
+  "strings": {
+    "A pedir acesso ao microfone…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requesting microphone access…"
           }
         }
       }
     },
-    "Sair do Afina" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quit Afina"
+    "Abrir Definições do Sistema": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open System Settings"
+          }
+        }
+      }
+    },
+    "Afina": {
+      "shouldTranslate": false
+    },
+    "Entrada": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Input"
+          }
+        }
+      }
+    },
+    "Microfones Bluetooth têm menos qualidade e mais latência. Para afinar, prefere o microfone interno ou uma interface de áudio.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth microphones have lower quality and more latency. For tuning, prefer the built-in microphone or an audio interface."
+          }
+        }
+      }
+    },
+    "Nenhum dispositivo de entrada disponível.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No input device available."
+          }
+        }
+      }
+    },
+    "Não foi possível iniciar o áudio.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not start audio."
+          }
+        }
+      }
+    },
+    "Nível de entrada": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Input level"
+          }
+        }
+      }
+    },
+    "O dispositivo de entrada não está disponível.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The input device is not available."
+          }
+        }
+      }
+    },
+    "Para afinar, o Afina precisa de ouvir o teu instrumento. Ativa o acesso em Definições do Sistema → Privacidade e Segurança → Microfone.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To tune, Afina needs to hear your instrument. Turn on access in System Settings → Privacy & Security → Microphone."
+          }
+        }
+      }
+    },
+    "Predefinição do sistema": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System default"
+          }
+        }
+      }
+    },
+    "Sair do Afina": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quit Afina"
+          }
+        }
+      }
+    },
+    "Sem acesso ao microfone": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No microphone access"
           }
         }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

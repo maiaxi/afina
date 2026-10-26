@@ -8,8 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		113B51D567ED19EF266B15B2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3826E1708B058637FFBC5AD7 /* Localizable.xcstrings */; };
+		1C35211F01BDA5AF99467DE8 /* InputLevelMeterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C695FD5B562E5B1D4130DEC8 /* InputLevelMeterView.swift */; };
+		45A7911636448B35E39CF9A9 /* InputMonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E693B23B3544BFBCBF934F95 /* InputMonitorView.swift */; };
 		6511D903BDE7A2F27FD8A6D9 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 20778489139FC43CE12CFFC4 /* InfoPlist.xcstrings */; };
+		6E1BBE373ACD98606CAB6FE6 /* TunerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEF9102151FAACBB389EE41 /* TunerViewModel.swift */; };
 		73F78E7E328B7DACCD11BE9F /* AfinaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC822D052F6B1CDBAFD1EBEE /* AfinaApp.swift */; };
+		A3ACD44C2DEE0229F8CE8A71 /* MicrophonePermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39D3FD82A90CAD8625FAD40 /* MicrophonePermissionView.swift */; };
 		A433F1EC4DBE9C375C76A84B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 66F57C58DBA8F5E8732639CE /* Assets.xcassets */; };
 		CD884710DEF95F0298F3FDC7 /* AfinaCore in Frameworks */ = {isa = PBXBuildFile; productRef = F78150C9EDE57FFF759D2B69 /* AfinaCore */; };
 		D58365A4DBB7B99470FE5E66 /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7853078C965F3B46AC3EB1 /* MenuBarContentView.swift */; };
@@ -23,8 +27,12 @@
 		66F57C58DBA8F5E8732639CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7F7853078C965F3B46AC3EB1 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
 		9008F84BFCC7151633D449E6 /* AfinaCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AfinaCore; path = Packages/AfinaCore; sourceTree = SOURCE_ROOT; };
+		C695FD5B562E5B1D4130DEC8 /* InputLevelMeterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputLevelMeterView.swift; sourceTree = "<group>"; };
 		CC822D052F6B1CDBAFD1EBEE /* AfinaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfinaApp.swift; sourceTree = "<group>"; };
 		D7E425A471579FAFF5AFAD1D /* Afina.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Afina.entitlements; sourceTree = "<group>"; };
+		DAEF9102151FAACBB389EE41 /* TunerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerViewModel.swift; sourceTree = "<group>"; };
+		E39D3FD82A90CAD8625FAD40 /* MicrophonePermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophonePermissionView.swift; sourceTree = "<group>"; };
+		E693B23B3544BFBCBF934F95 /* InputMonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputMonitorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +55,7 @@
 				1B83551080FFD69099691DA4 /* Info.plist */,
 				7F7853078C965F3B46AC3EB1 /* MenuBarContentView.swift */,
 				8BEA66690C20729BAC92BBE4 /* Resources */,
+				42E951035BD5E34EAE8F3204 /* Tuner */,
 			);
 			path = Afina;
 			sourceTree = "<group>";
@@ -66,6 +75,17 @@
 				18BC3D4F843CC20C0497B384 /* Afina.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		42E951035BD5E34EAE8F3204 /* Tuner */ = {
+			isa = PBXGroup;
+			children = (
+				C695FD5B562E5B1D4130DEC8 /* InputLevelMeterView.swift */,
+				E693B23B3544BFBCBF934F95 /* InputMonitorView.swift */,
+				E39D3FD82A90CAD8625FAD40 /* MicrophonePermissionView.swift */,
+				DAEF9102151FAACBB389EE41 /* TunerViewModel.swift */,
+			);
+			path = Tuner;
 			sourceTree = "<group>";
 		};
 		8BEA66690C20729BAC92BBE4 /* Resources */ = {
@@ -165,7 +185,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				73F78E7E328B7DACCD11BE9F /* AfinaApp.swift in Sources */,
+				1C35211F01BDA5AF99467DE8 /* InputLevelMeterView.swift in Sources */,
+				45A7911636448B35E39CF9A9 /* InputMonitorView.swift in Sources */,
 				D58365A4DBB7B99470FE5E66 /* MenuBarContentView.swift in Sources */,
+				A3ACD44C2DEE0229F8CE8A71 /* MicrophonePermissionView.swift in Sources */,
+				6E1BBE373ACD98606CAB6FE6 /* TunerViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

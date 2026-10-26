@@ -97,12 +97,14 @@ guitar-app/
 **Aceitação:** `440 Hz → A4 +0¢`, `82,41 Hz → E2 ±0,1¢`, `A4=432 → 432 Hz é A4 +0¢`; afinações serializam/desserializam sem perdas.
 
 ### Fase 2 — Captura de áudio (`AfinaCore/Audio`)
-- [ ] Pedido de permissão do microfone (`AVCaptureDevice.requestAccess(for: .audio)`), com ecrã de erro e botão para Definições do Sistema
-- [ ] `AudioInput`: `AVAudioEngine.inputNode.installTap`, mono, sample rate nativo
-- [ ] Ring buffer lock-free (single producer / single consumer) entre o tap e a análise
-- [ ] Listar dispositivos de entrada (Core Audio) e trocar de dispositivo em runtime
-- [ ] Reagir a mudanças de configuração (`AVAudioEngineConfigurationChange`, ligar/desligar interface USB, auscultadores)
-- [ ] Medidor de nível (RMS/dBFS) para debug e para o noise gate
+- [x] Pedido de permissão do microfone (`AVCaptureDevice.requestAccess(for: .audio)`), com ecrã de erro e botão para Definições do Sistema
+- [x] `AudioInput`: `AVAudioEngine.inputNode.installTap`, mono, sample rate nativo
+- [x] Ring buffer lock-free (single producer / single consumer) entre o tap e a análise
+- [x] Listar dispositivos de entrada (Core Audio) e trocar de dispositivo em runtime
+- [x] Reagir a mudanças de configuração (`AVAudioEngineConfigurationChange`, ligar/desligar interface USB, auscultadores)
+- [x] Medidor de nível (RMS/dBFS) para debug e para o noise gate
+
+**Notas de implementação:** o tap usa só o primeiro canal; cada arranque cria um `AVAudioEngine` novo (troca de dispositivo via `auAudioUnit.setDeviceID`); o dispositivo escolhido guarda-se pelo UID e, se estiver desligado, usa-se a entrada por defeito até voltar; ring buffer de 65 536 amostras que descarta áudio novo quando cheio.
 
 **Aceitação:** o nível do microfone mexe na UI; trocar de dispositivo não crasha nem deixa o motor parado.
 
