@@ -33,7 +33,7 @@ App nativa de macOS para músicos: **afinador** e **metrónomo**, a viver na bar
 ### Parâmetros iniciais do metrónomo
 - 20–300 BPM; compassos simples e compostos (2/4, 3/4, 4/4, 5/4, 6/8, 7/8, 12/8).
 - Cliques gerados no render callback do `AVAudioSourceNode`, contados em amostras — **nunca** `Timer`/`DispatchQueue` para tempo.
-- Sons sintetizados (seno curto com envelope): acento ~1500 Hz, tempo ~1000 Hz, subdivisão ~800 Hz e mais baixa.
+- Sons sintetizados (seno curto com envelope): acento ~1500 Hz, tempo ~1000 Hz, tempo fraco ~800 Hz, subdivisão ~600 Hz e mais baixa.
 - Alterações de BPM aplicadas no tempo seguinte; o estado partilhado com o thread de áudio vai por atómicos.
 
 ---
@@ -149,7 +149,7 @@ guitar-app/
 
 **Notas de implementação:**
 - **Motores separados** para afinador e metrónomo: o afinador só liga o microfone com o seu separador visível; o metrónomo continua a tocar com o popover fechado.
-- O BPM conta **pulsos do denominador** (em 6/8, colcheias). `TimeSignature.grouping` define os acentos secundários (6/8 = 3+3, 7/8 = 2+2+3, 12/8 = 3+3+3+3). Quatro sons: acento (1500 Hz), início de grupo (1000 Hz), pulso dentro do grupo (1000 Hz, mais baixo), subdivisão (800 Hz).
+- O BPM conta **pulsos do denominador** (em 6/8, colcheias). `TimeSignature.grouping` define os acentos secundários (6/8 = 3+3, 7/8 = 2+2+3, 12/8 = 3+3+3+3). Quatro sons, distintos na altura e no volume: acento (1500 Hz), tempo forte/início de grupo (1000 Hz), tempo fraco (800 Hz), subdivisão (600 Hz).
 - Clique n em `round(âncora + n × intervalo)`; mudanças de BPM/compasso/subdivisão re-ancoram no pulso seguinte. Testado offline: 60 s a 120 BPM e 10 min a 113 BPM/44,1 kHz com deriva zero, buffers de tamanho variável.
 - Atalho: espaço para tocar/parar.
 - Som por pulso editável (`BeatPattern`): carregar numa bola do indicador alterna acento → tempo → fraco → silêncio; mudar de compasso repõe o padrão por defeito.

@@ -197,6 +197,19 @@ struct TapTempoTests {
     }
 }
 
+struct ClickSynthTests {
+    /// Os sons têm de se distinguir: altura sempre a descer e volume a descer pelo menos ~2 dB.
+    @Test func clickKindsAreDistinct() {
+        let kinds = ClickKind.allCases
+        #expect(Set(kinds.map(\.frequency)).count == kinds.count)
+        for (louder, softer) in zip(kinds, kinds.dropFirst()) {
+            let difference = LevelMeter.decibelsFullScale(louder.amplitude) - LevelMeter.decibelsFullScale(softer.amplitude)
+            #expect(difference >= 1.9, "\(louder) → \(softer): \(difference) dB")
+            #expect(louder.frequency > softer.frequency)
+        }
+    }
+}
+
 struct BeatPatternTests {
     @Test func defaultFollowsGrouping() {
         #expect(BeatPattern(defaultFor: .threeFour).sounds == [.accent, .beat, .beat])

@@ -11,20 +11,22 @@ public enum ClickKind: Int, CaseIterable, Sendable {
     /// Cliques entre pulsos.
     case subdivision
 
+    // Cada tipo difere na altura e no volume: só com o volume (menos de 3 dB) não se distinguiam.
     var frequency: Double {
         switch self {
         case .accent: 1500
-        case .beat, .weakBeat: 1000
-        case .subdivision: 800
+        case .beat: 1000
+        case .weakBeat: 800
+        case .subdivision: 600
         }
     }
 
     var amplitude: Float {
         switch self {
         case .accent: 1
-        case .beat: 0.75
-        case .weakBeat: 0.55
-        case .subdivision: 0.4
+        case .beat: 0.8
+        case .weakBeat: 0.5
+        case .subdivision: 0.35
         }
     }
 }
