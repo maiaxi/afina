@@ -123,6 +123,16 @@
           }
         }
       }
+    },
+    "À espera de som…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for sound…"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

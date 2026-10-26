@@ -109,13 +109,20 @@ guitar-app/
 **Aceitação:** o nível do microfone mexe na UI; trocar de dispositivo não crasha nem deixa o motor parado.
 
 ### Fase 3 — Deteção de pitch (`AfinaCore/Pitch`)
-- [ ] Protocolo `PitchDetector { func detect(_ samples: UnsafeBufferPointer<Float>, sampleRate: Double) -> PitchEstimate? }`
-- [ ] Implementação MPM com NSDF calculada via FFT (`vDSP`), *peak picking* e interpolação parabólica
-- [ ] Implementação YIN (para comparar e como fallback)
-- [ ] Pré-processamento: remoção de DC, janela, noise gate
-- [ ] Suavização (mediana + EMA) e histerese de nota
-- [ ] Testes com sinais sintéticos: senos puros, senos com harmónicos fortes (fundamental fraca), ruído branco (deve devolver `nil`), 41 Hz a 1500 Hz
-- [ ] Benchmark: análise de uma janela de 4096 em < 2 ms num Mac Apple Silicon
+- [x] Protocolo `PitchDetector { func detect(_ samples: UnsafeBufferPointer<Float>, sampleRate: Double) -> PitchEstimate? }`
+- [x] Implementação MPM com NSDF calculada via FFT (`vDSP`), *peak picking* e interpolação parabólica
+- [x] Implementação YIN (para comparar e como fallback)
+- [x] Pré-processamento: remoção de DC, janela, noise gate
+- [x] Suavização (mediana + EMA) e histerese de nota
+- [x] Testes com sinais sintéticos: senos puros, senos com harmónicos fortes (fundamental fraca), ruído branco (deve devolver `nil`), 41 Hz a 1500 Hz
+- [x] Benchmark: análise de uma janela de 4096 em < 2 ms num Mac Apple Silicon
+
+**Notas de implementação:**
+- Sem janela (Hann, etc.): a normalização da NSDF já trata as pontas; o pré-processamento é remoção de DC nos detetores e noise gate (RMS da janela, −55 dBFS com 6 dB de histerese) no `PitchAnalyzer`.
+- Refinamento pelo maior múltiplo do período que cabe na janela (MPM e YIN): o erro da interpolação parabólica divide-se pelo nº de períodos. Com ruído a ~22 dB de SNR passou de ~3¢ para < 1,5¢ numa só janela.
+- Tempo por janela de 4096 (MPM): ~14 µs em release, ~0,2 ms em debug.
+- Por agora a análise corre no `MainActor`, no ciclo de ~30 Hz do `TunerViewModel`; passar para um thread próprio se o custo subir.
+- O popover mostra uma linha de debug (nota, cents, Hz) para validar com uma corda real antes da UI da fase 4.
 
 **Aceitação:** erro < 1 cent em senos sintéticos de 40–1500 Hz; sem erros de oitava nos testes com harmónicos; estável (< ±2¢ de jitter) numa corda real sustentada.
 

@@ -2,17 +2,19 @@ import AfinaCore
 import Foundation
 import Observation
 
-/// Estado do afinador para a UI. Por agora (fase 2) só permissão, dispositivos e nível de entrada.
+/// Estado do afinador para a UI: permissão, dispositivos, nível de entrada e leitura de pitch.
 @Observable
 @MainActor
 final class TunerViewModel {
     private(set) var permission = MicrophonePermission.status
     private(set) var level = InputLevel.silence
     private(set) var devices: [AudioDevice] = []
+    private(set) var analysis: PitchAnalyzer.Output?
 
     let audioInput = AudioInput()
 
     @ObservationIgnored private var deviceObserver: AudioDeviceChangeObserver?
+    @ObservationIgnored private var analyzer: PitchAnalyzer?
 
     /// Cadência de atualização da UI (~30 Hz).
     private static let refreshInterval = Duration.milliseconds(33)
@@ -44,11 +46,30 @@ final class TunerViewModel {
             audioInput.stop()
             deviceObserver = nil
             level = .silence
+            analysis = nil
+            analyzer = nil
         }
 
         while !Task.isCancelled {
             level = audioInput.level
+            analyzeAvailableAudio()
             try? await Task.sleep(for: Self.refreshInterval)
+        }
+    }
+
+    /// A análise de uma janela custa poucas dezenas de µs, por isso corre aqui, ao ritmo da UI;
+    /// o ring buffer absorve atrasos do thread principal.
+    private func analyzeAvailableAudio() {
+        guard case .running(let format) = audioInput.state else {
+            analysis = nil
+            return
+        }
+        if analyzer?.sampleRate != format.sampleRate {
+            analyzer = PitchAnalyzer(sampleRate: format.sampleRate)
+            audioInput.ringBuffer.discardAll()
+        }
+        if let output = analyzer?.process(from: audioInput.ringBuffer) {
+            analysis = output
         }
     }
 
