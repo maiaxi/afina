@@ -9,6 +9,8 @@ struct NoteDisplayView: View {
     let tolerance: Double
     let notation: NoteNotation
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
         VStack(spacing: 4) {
             HStack(alignment: .firstTextBaseline, spacing: 2) {
@@ -21,7 +23,7 @@ struct NoteDisplayView: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            .contentTransition(.numericText())
+            .contentTransition(reduceMotion ? .identity : .numericText())
 
             detail
                 .font(.callout.monospacedDigit())
@@ -35,8 +37,14 @@ struct NoteDisplayView: View {
     private var detail: some View {
         if let target, let frequency {
             HStack(spacing: 12) {
-                Text(verbatim: Self.centsText(target.cents))
-                    .foregroundStyle(noteColor)
+                // O ✓ indica "afinado" sem depender só da cor
+                HStack(spacing: 3) {
+                    if target.isInTune(tolerance: tolerance) {
+                        Image(systemName: "checkmark")
+                    }
+                    Text(verbatim: Self.centsText(target.cents))
+                }
+                .foregroundStyle(noteColor)
                 Text(verbatim: frequency.formatted(.number.precision(.fractionLength(1))) + " Hz")
             }
         } else if isSignalPresent {

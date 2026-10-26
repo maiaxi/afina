@@ -18,15 +18,20 @@ struct TunerView: View {
                 InstrumentControlsView(tuner: tuner)
             }
 
-            NoteDisplayView(
-                target: tuner.target,
-                frequency: tuner.analysis?.reading?.frequency,
-                isSignalPresent: tuner.isSignalPresent,
-                tolerance: tuner.tolerance,
-                notation: tuner.notation
-            )
-
-            CentsMeterView(cents: tuner.target?.cents, tolerance: tuner.tolerance)
+            VStack(spacing: 16) {
+                NoteDisplayView(
+                    target: tuner.target,
+                    frequency: tuner.analysis?.reading?.frequency,
+                    isSignalPresent: tuner.isSignalPresent,
+                    tolerance: tuner.tolerance,
+                    notation: tuner.notation
+                )
+                CentsMeterView(cents: tuner.target?.cents, tolerance: tuner.tolerance)
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(TunerAccessibility.label(for: tuner.target, notation: tuner.notation))
+            .accessibilityValue(TunerAccessibility.value(for: tuner.target, tolerance: tuner.tolerance))
+            .accessibilityAddTraits(.updatesFrequently)
 
             if tuner.mode == .instrument {
                 StringsView(

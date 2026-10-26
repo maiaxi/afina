@@ -20,7 +20,7 @@ App nativa de macOS para músicos: **afinador** e **metrónomo**, a viver na bar
 | Persistência | `UserDefaults`/`@AppStorage` + JSON `Codable` para afinações personalizadas | Pouco estado, não justifica SwiftData |
 | Estrutura | Projeto Xcode (app) + Swift Package local `AfinaCore` (lógica) | A lógica testa-se com `swift test`, sem UI nem microfone |
 | Projeto Xcode | Gerado com XcodeGen a partir de `project.yml`; o `.xcodeproj` também é versionado | Diffs legíveis, sem conflitos no `project.pbxproj`; abre-se no Xcode sem instalar nada |
-| Dependências externas | Nenhuma no MVP | Atalhos globais: avaliar `KeyboardShortcuts` (sindresorhus) na fase 6 |
+| Dependências externas | Nenhuma | Atalhos globais feitos com Carbon `RegisterEventHotKey` em vez de `KeyboardShortcuts`: funciona com sandbox, sem permissão de Acessibilidade |
 
 ### Parâmetros iniciais do afinador
 - Sample rate: o do dispositivo (normalmente 48 kHz); nada de hardcoded.
@@ -157,14 +157,24 @@ guitar-app/
 **Aceitação:** sem deriva audível ao fim de 10 minutos; mudar o BPM a meio não provoca cliques fora de tempo.
 
 ### Fase 6 — Polimento do MVP
-- [ ] Persistir as últimas escolhas (instrumento, afinação, A4, BPM, compasso…)
-- [ ] Editor de afinações personalizadas (criar, renomear, apagar)
-- [ ] Janela "destacável" (`Window`) para quem quer a app sempre visível
-- [ ] Definições: dispositivo de entrada, tolerância, notação (Dó/C), som do clique, mostrar na Dock
-- [ ] Atalhos de teclado globais (ligar/desligar metrónomo, tap tempo, abrir afinador)
-- [ ] Localização pt-PT e en
-- [ ] Ícone da app e ícone da barra de menus (SF Symbol ou template próprio)
-- [ ] Acessibilidade: VoiceOver na agulha ("Mi, 5 cents abaixo"), contraste, Reduce Motion
+- [x] Persistir as últimas escolhas (instrumento, afinação, A4, BPM, compasso…)
+- [x] Editor de afinações personalizadas (criar, renomear, apagar)
+- [x] Janela "destacável" (`Window`) para quem quer a app sempre visível
+- [x] Definições: dispositivo de entrada, tolerância, notação (Dó/C), som do clique, mostrar na Dock
+- [x] Atalhos de teclado globais (ligar/desligar metrónomo, tap tempo, abrir afinador)
+- [x] Localização pt-PT e en
+- [x] Ícone da app e ícone da barra de menus (SF Symbol ou template próprio)
+- [x] Acessibilidade: VoiceOver na agulha ("Mi, 5 cents abaixo"), contraste, Reduce Motion
+
+**Notas de implementação:**
+- Preferências em `UserDefaults` como JSON (`TunerPreferences`, `MetronomePreferences` no `AfinaCore`, tolerantes a campos em falta); gravadas automaticamente com `withObservationTracking`.
+- Afinações personalizadas (`TuningLibrary`) aparecem no fim da lista de cada instrumento; nome livre, não traduzido.
+- Os padrões de acentos são guardados por compasso; menu de contexto no indicador para os repor.
+- Definições e janela destacável são cenas `Window` (mais fiável que `Settings` numa app sem Dock). O microfone fica ligado enquanto houver alguma vista do afinador visível (popover, janela ou separador Afinador das Definições).
+- Atalhos globais com Carbon `RegisterEventHotKey`: lista fechada de modificadores (⌃⌥, ⌃⌥⌘, ⌥⌘, ⇧⌘) + letra/algarismo; aviso se o atalho estiver ocupado.
+- Som do clique: "Bip" ou "Madeira" (parciais inarmónicos sintetizados).
+- Ícone desenhado por `scripts/make_icon.swift` (SF Symbols não podem ser usados em ícones de apps); o ícone da barra de menus passa a metrónomo enquanto este toca.
+- VoiceOver lê nota e desvio como um só elemento ("Mi 2, 5 cents abaixo"), com plural; respeita Reduzir movimento e Aumentar contraste; ✓ junto aos cents para não depender só da cor.
 
 **Aceitação:** a app é utilizável no dia a dia sem nada "por fazer" visível.
 

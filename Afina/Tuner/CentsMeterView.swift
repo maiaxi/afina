@@ -6,6 +6,9 @@ struct CentsMeterView: View {
     let cents: Double?
     let tolerance: Double
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.colorSchemeContrast) private var contrast
+
     private static let range = 50.0
     private static let tickValues = stride(from: -50, through: 50, by: 10).map(Double.init)
 
@@ -14,12 +17,12 @@ struct CentsMeterView: View {
             let width = geometry.size.width
             ZStack {
                 RoundedRectangle(cornerRadius: 3)
-                    .fill(.green.opacity(0.25))
+                    .fill(.green.opacity(contrast == .increased ? 0.5 : 0.25))
                     .frame(width: width * tolerance / Self.range, height: geometry.size.height)
 
                 ForEach(Self.tickValues, id: \.self) { value in
                     Rectangle()
-                        .fill(.secondary)
+                        .fill(contrast == .increased ? AnyShapeStyle(.primary) : AnyShapeStyle(.secondary))
                         .frame(width: 1, height: value == 0 ? geometry.size.height : geometry.size.height * (value.truncatingRemainder(dividingBy: 50) == 0 ? 0.6 : 0.35))
                         .offset(x: position(value, width: width))
                 }
@@ -29,14 +32,12 @@ struct CentsMeterView: View {
                     .frame(width: 4, height: geometry.size.height)
                     .offset(x: position(cents ?? 0, width: width))
                     .opacity(cents == nil ? 0 : 1)
-                    .animation(.easeOut(duration: 0.12), value: cents)
+                    .animation(reduceMotion ? nil : .easeOut(duration: 0.12), value: cents)
             }
             .frame(width: width, height: geometry.size.height)
         }
         .frame(height: 36)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text("Desvio"))
-        .accessibilityValue(Text(verbatim: cents.map { "\(Int($0.rounded()))¢" } ?? "–"))
+        .accessibilityHidden(true) // lido em conjunto com a nota (ver `TunerAccessibility`)
     }
 
     private func position(_ value: Double, width: CGFloat) -> CGFloat {

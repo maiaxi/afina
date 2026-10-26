@@ -31,6 +31,7 @@
 		D8FBEB47DF748F34448E2C5D /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CDAF90FA86CA52B84A1A4B4 /* AppModel.swift */; };
 		E9DB58608ED64531A32EEF87 /* MetronomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D957D0203469D319F21F104 /* MetronomeViewModel.swift */; };
 		FB9339C3C9D424F4FB99C8E7 /* ShortcutsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84802EC527E6BE50576221E4 /* ShortcutsSettingsView.swift */; };
+		FD5FD3DB2F16A7243F1B668F /* TunerAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CABCADE3FA64C8AF0C21BA /* TunerAccessibility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		9D4CC49B448843EB50AC9396 /* TunerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerView.swift; sourceTree = "<group>"; };
 		AF4393CB703BF712A8E178C3 /* InstrumentControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentControlsView.swift; sourceTree = "<group>"; };
 		C695FD5B562E5B1D4130DEC8 /* InputLevelMeterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputLevelMeterView.swift; sourceTree = "<group>"; };
+		C8CABCADE3FA64C8AF0C21BA /* TunerAccessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerAccessibility.swift; sourceTree = "<group>"; };
 		CC7C9862AE82DE29F56F39D0 /* CentsMeterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentsMeterView.swift; sourceTree = "<group>"; };
 		CC822D052F6B1CDBAFD1EBEE /* AfinaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfinaApp.swift; sourceTree = "<group>"; };
 		D1F40DE3ABAD2B6A6DA72CAE /* MetronomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetronomeView.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				E39D3FD82A90CAD8625FAD40 /* MicrophonePermissionView.swift */,
 				F440B1DBFD05E9A51E87313B /* NoteDisplayView.swift */,
 				11B701539055643B73B0F00A /* StringsView.swift */,
+				C8CABCADE3FA64C8AF0C21BA /* TunerAccessibility.swift */,
 				FC4D87F46182BF8133E85C72 /* TunerSectionView.swift */,
 				9D4CC49B448843EB50AC9396 /* TunerView.swift */,
 				DAEF9102151FAACBB389EE41 /* TunerViewModel.swift */,
@@ -266,6 +269,7 @@
 				8D6F677AF1644D92306DAD80 /* SettingsView.swift in Sources */,
 				FB9339C3C9D424F4FB99C8E7 /* ShortcutsSettingsView.swift in Sources */,
 				9AAB2542B7CEC264D88ED32A /* StringsView.swift in Sources */,
+				FD5FD3DB2F16A7243F1B668F /* TunerAccessibility.swift in Sources */,
 				380A782FF5C09F8CD46E321C /* TunerSectionView.swift in Sources */,
 				42E691DCFEA79A0C8FEAA187 /* TunerView.swift in Sources */,
 				6E1BBE373ACD98606CAB6FE6 /* TunerViewModel.swift in Sources */,
