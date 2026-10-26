@@ -1,36 +1,41 @@
 import AfinaCore
 import SwiftUI
 
-/// Conteúdo do popover da barra de menus.
+/// Conteúdo do popover da barra de menus: afinador e metrónomo em separadores.
 struct MenuBarContentView: View {
     let tuner: TunerViewModel
+    let metronome: MetronomeViewModel
+
+    private enum Section: Hashable {
+        case tuner, metronome
+    }
+
+    @State private var section = Section.tuner
 
     var body: some View {
         VStack(spacing: 16) {
-            content
-            Divider()
-            Button("Sair do Afina") {
-                NSApplication.shared.terminate(nil)
+            Picker("Secção", selection: $section) {
+                Text("Afinador").tag(Section.tuner)
+                Text("Metrónomo").tag(Section.metronome)
             }
-            .keyboardShortcut("q")
+            .pickerStyle(.segmented)
+            .labelsHidden()
+
+            switch section {
+            case .tuner: TunerSectionView(tuner: tuner)
+            case .metronome: MetronomeView(metronome: metronome)
+            }
+
+            Divider()
+            HStack {
+                Spacer()
+                Button("Sair do Afina") {
+                    NSApplication.shared.terminate(nil)
+                }
+                .keyboardShortcut("q")
+            }
         }
         .padding(20)
         .frame(width: 320)
-        // O microfone só está ativo com o popover aberto.
-        .task { await tuner.run() }
-    }
-
-    @ViewBuilder
-    private var content: some View {
-        switch tuner.permission {
-        case .authorized:
-            TunerView(tuner: tuner)
-            Divider()
-            InputSectionView(tuner: tuner)
-        case .denied, .restricted:
-            MicrophonePermissionView()
-        case .notDetermined:
-            ProgressView("A pedir acesso ao microfone…")
-        }
     }
 }

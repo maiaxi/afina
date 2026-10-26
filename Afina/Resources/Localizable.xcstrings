@@ -34,6 +34,16 @@
         }
       }
     },
+    "Afinador": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuner"
+          }
+        }
+      }
+    },
     "Afinação": {
       "localizations": {
         "en": {
@@ -43,6 +53,19 @@
           }
         }
       }
+    },
+    "Aumentar %lld BPM": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Increase by %lld BPM"
+          }
+        }
+      }
+    },
+    "BPM": {
+      "shouldTranslate": false
     },
     "Baixo (4 cordas)": {
       "localizations": {
@@ -109,6 +132,16 @@
       },
       "extractionState": "manual"
     },
+    "Compasso": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time signature"
+          }
+        }
+      }
+    },
     "Cromático": {
       "localizations": {
         "en": {
@@ -140,6 +173,16 @@
         }
       }
     },
+    "Diminuir %lld BPM": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Decrease by %lld BPM"
+          }
+        }
+      }
+    },
     "Drop D": {
       "localizations": {
         "en": {
@@ -150,6 +193,36 @@
         }
       },
       "extractionState": "manual"
+    },
+    "Em 2": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In 2"
+          }
+        }
+      }
+    },
+    "Em 3 (tercinas)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In 3 (triplets)"
+          }
+        }
+      }
+    },
+    "Em 4": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In 4"
+          }
+        }
+      }
     },
     "Entrada": {
       "localizations": {
@@ -225,6 +298,16 @@
       },
       "extractionState": "manual"
     },
+    "Metrónomo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Metronome"
+          }
+        }
+      }
+    },
     "Microfones Bluetooth têm menos qualidade e mais latência. Para afinar, prefere o microfone interno ou uma interface de áudio.": {
       "localizations": {
         "en": {
@@ -251,6 +334,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "No input device available."
+          }
+        }
+      }
+    },
+    "Nenhuma": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "None"
           }
         }
       }
@@ -328,6 +421,16 @@
         }
       }
     },
+    "Parar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop"
+          }
+        }
+      }
+    },
     "Predefinição do sistema": {
       "localizations": {
         "en": {
@@ -344,6 +447,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Quit Afina"
+          }
+        }
+      }
+    },
+    "Secção": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Section"
           }
         }
       }
@@ -379,6 +492,39 @@
       },
       "extractionState": "manual"
     },
+    "Subdivisão": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subdivision"
+          }
+        }
+      }
+    },
+    "Tap": {
+      "shouldTranslate": false
+    },
+    "Tempo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beat"
+          }
+        }
+      }
+    },
+    "Tocar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play"
+          }
+        }
+      }
+    },
     "Tom abaixo": {
       "localizations": {
         "en": {
@@ -400,6 +546,16 @@
         }
       },
       "extractionState": "manual"
+    },
+    "Volume": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volume"
+          }
+        }
+      }
     },
     "À espera de som…": {
       "localizations": {

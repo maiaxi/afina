@@ -10,8 +10,10 @@
 		05E0EFC722F79223EB6DB9E8 /* NoteDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F440B1DBFD05E9A51E87313B /* NoteDisplayView.swift */; };
 		113B51D567ED19EF266B15B2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3826E1708B058637FFBC5AD7 /* Localizable.xcstrings */; };
 		1C35211F01BDA5AF99467DE8 /* InputLevelMeterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C695FD5B562E5B1D4130DEC8 /* InputLevelMeterView.swift */; };
+		380A782FF5C09F8CD46E321C /* TunerSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4D87F46182BF8133E85C72 /* TunerSectionView.swift */; };
 		42E691DCFEA79A0C8FEAA187 /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4CC49B448843EB50AC9396 /* TunerView.swift */; };
 		6511D903BDE7A2F27FD8A6D9 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 20778489139FC43CE12CFFC4 /* InfoPlist.xcstrings */; };
+		6DEB7FA457F0A3F1F5652BC7 /* MetronomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F40DE3ABAD2B6A6DA72CAE /* MetronomeView.swift */; };
 		6E1BBE373ACD98606CAB6FE6 /* TunerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEF9102151FAACBB389EE41 /* TunerViewModel.swift */; };
 		73F78E7E328B7DACCD11BE9F /* AfinaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC822D052F6B1CDBAFD1EBEE /* AfinaApp.swift */; };
 		9AAB2542B7CEC264D88ED32A /* StringsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B701539055643B73B0F00A /* StringsView.swift */; };
@@ -22,9 +24,11 @@
 		C9B9753FA6AC7806E2515010 /* InputSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00CA7F076F4C9F407A08D95 /* InputSectionView.swift */; };
 		CD884710DEF95F0298F3FDC7 /* AfinaCore in Frameworks */ = {isa = PBXBuildFile; productRef = F78150C9EDE57FFF759D2B69 /* AfinaCore */; };
 		D58365A4DBB7B99470FE5E66 /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7853078C965F3B46AC3EB1 /* MenuBarContentView.swift */; };
+		E9DB58608ED64531A32EEF87 /* MetronomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D957D0203469D319F21F104 /* MetronomeViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0D957D0203469D319F21F104 /* MetronomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetronomeViewModel.swift; sourceTree = "<group>"; };
 		11B701539055643B73B0F00A /* StringsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringsView.swift; sourceTree = "<group>"; };
 		18BC3D4F843CC20C0497B384 /* Afina.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Afina.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B83551080FFD69099691DA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -38,11 +42,13 @@
 		C695FD5B562E5B1D4130DEC8 /* InputLevelMeterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputLevelMeterView.swift; sourceTree = "<group>"; };
 		CC7C9862AE82DE29F56F39D0 /* CentsMeterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentsMeterView.swift; sourceTree = "<group>"; };
 		CC822D052F6B1CDBAFD1EBEE /* AfinaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfinaApp.swift; sourceTree = "<group>"; };
+		D1F40DE3ABAD2B6A6DA72CAE /* MetronomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetronomeView.swift; sourceTree = "<group>"; };
 		D7E425A471579FAFF5AFAD1D /* Afina.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Afina.entitlements; sourceTree = "<group>"; };
 		DAEF9102151FAACBB389EE41 /* TunerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerViewModel.swift; sourceTree = "<group>"; };
 		E39D3FD82A90CAD8625FAD40 /* MicrophonePermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophonePermissionView.swift; sourceTree = "<group>"; };
 		F00CA7F076F4C9F407A08D95 /* InputSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSectionView.swift; sourceTree = "<group>"; };
 		F440B1DBFD05E9A51E87313B /* NoteDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDisplayView.swift; sourceTree = "<group>"; };
+		FC4D87F46182BF8133E85C72 /* TunerSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerSectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +70,7 @@
 				CC822D052F6B1CDBAFD1EBEE /* AfinaApp.swift */,
 				1B83551080FFD69099691DA4 /* Info.plist */,
 				7F7853078C965F3B46AC3EB1 /* MenuBarContentView.swift */,
+				3B9F0F83C80B68A20322F614 /* Metronome */,
 				8BEA66690C20729BAC92BBE4 /* Resources */,
 				42E951035BD5E34EAE8F3204 /* Tuner */,
 			);
@@ -77,6 +84,15 @@
 				B7D66BCC9301685772F2BBDF /* Packages */,
 				41E371BEF6CDF5203126F0EE /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		3B9F0F83C80B68A20322F614 /* Metronome */ = {
+			isa = PBXGroup;
+			children = (
+				D1F40DE3ABAD2B6A6DA72CAE /* MetronomeView.swift */,
+				0D957D0203469D319F21F104 /* MetronomeViewModel.swift */,
+			);
+			path = Metronome;
 			sourceTree = "<group>";
 		};
 		41E371BEF6CDF5203126F0EE /* Products */ = {
@@ -97,6 +113,7 @@
 				E39D3FD82A90CAD8625FAD40 /* MicrophonePermissionView.swift */,
 				F440B1DBFD05E9A51E87313B /* NoteDisplayView.swift */,
 				11B701539055643B73B0F00A /* StringsView.swift */,
+				FC4D87F46182BF8133E85C72 /* TunerSectionView.swift */,
 				9D4CC49B448843EB50AC9396 /* TunerView.swift */,
 				DAEF9102151FAACBB389EE41 /* TunerViewModel.swift */,
 			);
@@ -205,9 +222,12 @@
 				C9B9753FA6AC7806E2515010 /* InputSectionView.swift in Sources */,
 				AFA8F21B2352819FB533C8DC /* InstrumentControlsView.swift in Sources */,
 				D58365A4DBB7B99470FE5E66 /* MenuBarContentView.swift in Sources */,
+				6DEB7FA457F0A3F1F5652BC7 /* MetronomeView.swift in Sources */,
+				E9DB58608ED64531A32EEF87 /* MetronomeViewModel.swift in Sources */,
 				A3ACD44C2DEE0229F8CE8A71 /* MicrophonePermissionView.swift in Sources */,
 				05E0EFC722F79223EB6DB9E8 /* NoteDisplayView.swift in Sources */,
 				9AAB2542B7CEC264D88ED32A /* StringsView.swift in Sources */,
+				380A782FF5C09F8CD46E321C /* TunerSectionView.swift in Sources */,
 				42E691DCFEA79A0C8FEAA187 /* TunerView.swift in Sources */,
 				6E1BBE373ACD98606CAB6FE6 /* TunerViewModel.swift in Sources */,
 			);

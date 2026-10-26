@@ -16,6 +16,7 @@ App nativa de macOS para músicos: **afinador** e **metrónomo**, a viver na bar
 | DSP | Accelerate (`vDSP`) | FFT/autocorrelação vetorizadas, sem dependências |
 | Deteção de pitch | **MPM (McLeod Pitch Method)**, YIN como alternativa | Estável nas cordas graves; FFT pura falha abaixo de ~100 Hz |
 | Estado | `@Observable` + `@MainActor` nos view models | Simples, compatível com Swift 6 strict concurrency |
+| Motores de áudio | Um `AVAudioEngine` para o afinador (entrada) e outro para o metrónomo (saída) | Ciclos de vida diferentes: o microfone só com o afinador visível, o metrónomo continua com o popover fechado |
 | Persistência | `UserDefaults`/`@AppStorage` + JSON `Codable` para afinações personalizadas | Pouco estado, não justifica SwiftData |
 | Estrutura | Projeto Xcode (app) + Swift Package local `AfinaCore` (lógica) | A lógica testa-se com `swift test`, sem UI nem microfone |
 | Projeto Xcode | Gerado com XcodeGen a partir de `project.yml`; o `.xcodeproj` também é versionado | Diffs legíveis, sem conflitos no `project.pbxproj`; abre-se no Xcode sem instalar nada |
@@ -139,12 +140,18 @@ guitar-app/
 **Aceitação:** afinar uma guitarra real do início ao fim só com a app, no popover da barra de menus.
 
 ### Fase 5 — Metrónomo (MVP)
-- [ ] `MetronomeEngine` em `AfinaCore`: `AVAudioSourceNode` com contador de amostras, cliques pré-sintetizados, acentos, subdivisões (colcheias, tercinas, semicolcheias)
-- [ ] Estado partilhado com o thread de áudio via `Atomic` (BPM, compasso, a tocar/parado); o callback publica o índice do tempo atual para a UI
-- [ ] `TapTempo`: média dos últimos 4–6 toques, reset após 2 s sem toques
-- [ ] UI: BPM (slider + campo + ±1/±5), botão tap, compasso, subdivisão, volume, indicador visual por tempo (acento destacado)
-- [ ] Afinador e metrónomo podem coexistir (input e output no mesmo motor ou em motores separados — decidir na implementação)
-- [ ] Teste: renderizar 60 s offline a 120 BPM e confirmar que os cliques caem na amostra exata (deriva = 0)
+- [x] `MetronomeEngine` em `AfinaCore`: `AVAudioSourceNode` com contador de amostras, cliques pré-sintetizados, acentos, subdivisões (colcheias, tercinas, semicolcheias)
+- [x] Estado partilhado com o thread de áudio via `Atomic` (BPM, compasso, a tocar/parado); o callback publica o índice do tempo atual para a UI
+- [x] `TapTempo`: média dos últimos 4–6 toques, reset após 2 s sem toques
+- [x] UI: BPM (slider + campo + ±1/±5), botão tap, compasso, subdivisão, volume, indicador visual por tempo (acento destacado)
+- [x] Afinador e metrónomo podem coexistir (input e output no mesmo motor ou em motores separados — decidir na implementação)
+- [x] Teste: renderizar 60 s offline a 120 BPM e confirmar que os cliques caem na amostra exata (deriva = 0)
+
+**Notas de implementação:**
+- **Motores separados** para afinador e metrónomo: o afinador só liga o microfone com o seu separador visível; o metrónomo continua a tocar com o popover fechado.
+- O BPM conta **pulsos do denominador** (em 6/8, colcheias). `TimeSignature.grouping` define os acentos secundários (6/8 = 3+3, 7/8 = 2+2+3, 12/8 = 3+3+3+3). Quatro sons: acento (1500 Hz), início de grupo (1000 Hz), pulso dentro do grupo (1000 Hz, mais baixo), subdivisão (800 Hz).
+- Clique n em `round(âncora + n × intervalo)`; mudanças de BPM/compasso/subdivisão re-ancoram no pulso seguinte. Testado offline: 60 s a 120 BPM e 10 min a 113 BPM/44,1 kHz com deriva zero, buffers de tamanho variável.
+- Atalho: espaço para tocar/parar.
 
 **Aceitação:** sem deriva audível ao fim de 10 minutos; mudar o BPM a meio não provoca cliques fora de tempo.
 
