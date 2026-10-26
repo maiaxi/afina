@@ -1,0 +1,28 @@
+{
+  "sourceLanguage" : "pt-PT",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "shouldTranslate" : false
+    },
+    "CFBundleName" : {
+      "shouldTranslate" : false
+    },
+    "NSMicrophoneUsageDescription" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afina uses the microphone to detect the note you are playing. Audio is processed only on your Mac and is never recorded."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Afina usa o microfone para detetar a nota que estás a tocar. O áudio é processado apenas no teu Mac e nunca é gravado."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

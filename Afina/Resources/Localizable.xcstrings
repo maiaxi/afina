@@ -1,0 +1,29 @@
+{
+  "sourceLanguage" : "pt-PT",
+  "strings" : {
+    "Afina" : {
+      "shouldTranslate" : false
+    },
+    "Afinador e metrónomo em breve" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuner and metronome coming soon"
+          }
+        }
+      }
+    },
+    "Sair do Afina" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quit Afina"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
