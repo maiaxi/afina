@@ -21,6 +21,15 @@ struct MetronomeEngineTests {
         #expect(engine.volume == 0)
     }
 
+    @Test func cyclingAndSignatureChangeUpdatePattern() {
+        let engine = MetronomeEngine()
+        engine.cycleSound(atPulse: 1)
+        #expect(engine.beatPattern.sounds == [.accent, .weakBeat, .beat, .beat])
+        engine.cycleSound(atPulse: 9) // fora do compasso: ignorado
+        engine.timeSignature = .sixEight
+        #expect(engine.beatPattern == BeatPattern(defaultFor: .sixEight))
+    }
+
     @Test func notPlayingHasNoPosition() {
         let engine = MetronomeEngine()
         #expect(!engine.isPlaying)

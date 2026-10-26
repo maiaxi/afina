@@ -8,6 +8,7 @@ final class MetronomeParameters: Sendable {
     let timeSignatureIndex = Atomic<Int>(2)
     let subdivision = Atomic<Int>(1)
     let volume = AtomicFloat(0.8)
+    let beatPattern = Atomic<UInt64>(BeatPattern(defaultFor: .fourFour).packed)
     let isPlaying = Atomic<Bool>(false)
     /// Incrementado a cada arranque: o renderer recomeça o compasso quando o vê mudar.
     let startGeneration = Atomic<Int>(0)
@@ -27,7 +28,8 @@ final class MetronomeParameters: Sendable {
 ///
 /// O tempo conta-se em amostras: o clique n cai em `round(âncora + n × intervalo)`, por isso não há
 /// deriva acumulada. Os parâmetros lêem-se uma vez por buffer e só entram em vigor no pulso
-/// seguinte (re-ancorando o tempo nesse instante). Os sons são pré-sintetizados na inicialização;
+/// seguinte (re-ancorando o tempo nesse instante); o padrão de sons lê-se em cada pulso.
+/// Os sons são pré-sintetizados na inicialização;
 /// `render` só copia e escala, sem alocar nem bloquear.
 final class MetronomeRenderer: @unchecked Sendable {
     let parameters: MetronomeParameters
@@ -35,10 +37,8 @@ final class MetronomeRenderer: @unchecked Sendable {
 
     private let clickLength: Int
     private let clicks: UnsafeMutablePointer<Float>
-    private let maximumBeats: Int
     private let timeSignatureCount: Int
     private let beatsPerBar: UnsafeMutablePointer<Int>
-    private let pulseKinds: UnsafeMutablePointer<Int>
 
     // Estado do thread de áudio
     private var generation = -1
@@ -68,22 +68,15 @@ final class MetronomeRenderer: @unchecked Sendable {
 
         let signatures = TimeSignature.all
         timeSignatureCount = signatures.count
-        maximumBeats = signatures.map(\.beats).max() ?? 1
         beatsPerBar = .allocate(capacity: timeSignatureCount)
-        pulseKinds = .allocate(capacity: timeSignatureCount * maximumBeats)
         for (index, signature) in signatures.enumerated() {
             beatsPerBar[index] = signature.beats
-            for pulse in 0..<maximumBeats {
-                let kind: ClickKind = pulse == 0 ? .accent : signature.isGroupStart(pulse) ? .beat : .weakBeat
-                pulseKinds[index * maximumBeats + pulse] = kind.rawValue
-            }
         }
     }
 
     deinit {
         clicks.deallocate()
         beatsPerBar.deallocate()
-        pulseKinds.deallocate()
     }
 
     /// Preenche `frameCount` amostras mono em `output`.
@@ -148,9 +141,12 @@ final class MetronomeRenderer: @unchecked Sendable {
         let isPulseStart = subdivisionIndex == 0
         if isPulseStart { applyParameters() }
 
-        activeClick = isPulseStart
-            ? pulseKinds[activeTimeSignature * maximumBeats + pulseIndex]
-            : ClickKind.subdivision.rawValue
+        if isPulseStart {
+            let pattern = parameters.beatPattern.load(ordering: .relaxed)
+            activeClick = BeatPattern.sound(atPulse: pulseIndex, in: pattern).clickKind?.rawValue ?? -1
+        } else {
+            activeClick = ClickKind.subdivision.rawValue
+        }
         clickPosition = 0
 
         if isPulseStart {

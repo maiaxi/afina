@@ -19,11 +19,20 @@ public final class MetronomeEngine {
         }
     }
 
+    /// Mudar de compasso repõe o padrão de sons por defeito desse compasso.
     public var timeSignature = TimeSignature.fourFour {
         didSet {
             let index = TimeSignature.all.firstIndex(of: timeSignature) ?? 0
             parameters.timeSignatureIndex.store(index, ordering: .relaxed)
+            if timeSignature != oldValue {
+                beatPattern = BeatPattern(defaultFor: timeSignature)
+            }
         }
+    }
+
+    /// Som de cada pulso do compasso; as alterações ouvem-se a partir do pulso seguinte.
+    public private(set) var beatPattern = BeatPattern(defaultFor: .fourFour) {
+        didSet { parameters.beatPattern.store(beatPattern.packed, ordering: .relaxed) }
     }
 
     public var subdivision = Subdivision.none {
@@ -77,6 +86,12 @@ public final class MetronomeEngine {
         guard isPlaying else { return }
         isPlaying = false
         stopEngine()
+    }
+
+    /// Passa o pulso para o som seguinte do ciclo (acento → tempo → fraco → silêncio).
+    public func cycleSound(atPulse pulse: Int) {
+        guard beatPattern.sounds.indices.contains(pulse) else { return }
+        beatPattern[pulse] = beatPattern[pulse].next
     }
 
     public func toggle() {

@@ -15,6 +15,7 @@ private final class OfflineMetronome {
         parameters.bpm = bpm
         parameters.timeSignatureIndex.store(TimeSignature.all.firstIndex(of: signature) ?? 0, ordering: .relaxed)
         parameters.subdivision.store(subdivision.rawValue, ordering: .relaxed)
+        parameters.beatPattern.store(BeatPattern(defaultFor: signature).packed, ordering: .relaxed)
         parameters.volume.store(1)
         parameters.isPlaying.store(true, ordering: .relaxed)
         parameters.startGeneration.add(1, ordering: .relaxed)
@@ -102,6 +103,16 @@ struct MetronomeRendererTests {
         #expect(sevenKinds == [.accent, .weakBeat, .beat, .weakBeat, .beat, .weakBeat, .weakBeat])
     }
 
+    @Test func customPatternChangesSoundsAndSilencesPulses() {
+        let metronome = OfflineMetronome(bpm: 120, signature: .fourFour)
+        let pattern = BeatPattern(sounds: [.accent, .silent, .weakBeat, .accent])
+        metronome.parameters.beatPattern.store(pattern.packed, ordering: .relaxed)
+        metronome.render(seconds: 2)
+        // O 2.º pulso (24 000) fica em silêncio, mas o tempo continua a contar
+        #expect(metronome.onsets == [0, 48_000, 72_000])
+        #expect(metronome.onsets.map { metronome.kind(at: $0) } == [.accent, .weakBeat, .accent])
+    }
+
     @Test func tripletsSplitEachPulse() {
         let metronome = OfflineMetronome(bpm: 60, subdivision: .three)
         metronome.render(seconds: 2)
@@ -183,6 +194,26 @@ struct TapTempoTests {
         _ = tap.tap(at: 0)
         _ = tap.tap(at: 0.5)
         #expect(tap.tap(at: 3) == nil)
+    }
+}
+
+struct BeatPatternTests {
+    @Test func defaultFollowsGrouping() {
+        #expect(BeatPattern(defaultFor: .threeFour).sounds == [.accent, .beat, .beat])
+        #expect(BeatPattern(defaultFor: .sevenEight).sounds == [.accent, .weakBeat, .beat, .weakBeat, .beat, .weakBeat, .weakBeat])
+    }
+
+    @Test func packingRoundTrips() {
+        let pattern = BeatPattern(sounds: [.silent, .accent, .weakBeat, .beat, .silent, .silent, .accent, .beat, .weakBeat, .accent, .silent, .beat])
+        for pulse in pattern.sounds.indices {
+            #expect(BeatPattern.sound(atPulse: pulse, in: pattern.packed) == pattern[pulse])
+        }
+    }
+
+    @Test func soundsCycle() {
+        #expect(PulseSound.accent.next == .beat)
+        #expect(PulseSound.weakBeat.next == .silent)
+        #expect(PulseSound.silent.next == .accent)
     }
 }
 

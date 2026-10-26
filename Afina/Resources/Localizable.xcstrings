@@ -21,6 +21,16 @@
         }
       }
     },
+    "Acento": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accent"
+          }
+        }
+      }
+    },
     "Afina": {
       "shouldTranslate": false
     },
@@ -106,6 +116,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Capo on fret %lld"
+          }
+        }
+      }
+    },
+    "Carrega para mudar o som deste tempo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click to change this beat's sound"
           }
         }
       }
@@ -481,6 +501,16 @@
         }
       }
     },
+    "Silêncio": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silent"
+          }
+        }
+      }
+    },
     "Standard": {
       "localizations": {
         "en": {
@@ -505,12 +535,32 @@
     "Tap": {
       "shouldTranslate": false
     },
-    "Tempo": {
+    "Tempo %lld": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Beat"
+            "value": "Beat %lld"
+          }
+        }
+      }
+    },
+    "Tempo forte": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Strong beat"
+          }
+        }
+      }
+    },
+    "Tempo fraco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weak beat"
           }
         }
       }

@@ -13,7 +13,11 @@ struct MetronomeView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            BeatIndicatorView(signature: engine.timeSignature, currentPulse: metronome.currentPulse)
+            BeatIndicatorView(
+                pattern: engine.beatPattern,
+                currentPulse: metronome.currentPulse,
+                onSelect: engine.cycleSound(atPulse:)
+            )
 
             bpmControls
 
@@ -84,11 +88,16 @@ struct MetronomeView: View {
                 stepButton(1)
                 stepButton(5)
             }
-            Slider(value: $engine.bpm, in: MetronomeEngine.bpmRange, step: 1) {
+            // Sem `step`: com 281 valores o macOS desenha uma marca por passo. Arredonda-se à mão.
+            Slider(value: roundedBPM, in: MetronomeEngine.bpmRange) {
                 Text(verbatim: "BPM")
             }
             .labelsHidden()
         }
+    }
+
+    private var roundedBPM: Binding<Double> {
+        Binding(get: { engine.bpm }, set: { engine.bpm = $0.rounded() })
     }
 
     private func stepButton(_ delta: Double) -> some View {
@@ -104,39 +113,83 @@ struct MetronomeView: View {
     }
 }
 
-/// Um círculo por pulso; o primeiro (acento) é maior e os inícios de grupo médios.
+/// Um círculo por pulso, com o tamanho a indicar o som (acento, tempo, fraco; só contorno =
+/// silêncio). Carregar num círculo muda o som desse pulso.
 struct BeatIndicatorView: View {
-    let signature: TimeSignature
+    let pattern: BeatPattern
     let currentPulse: Int?
+    let onSelect: (Int) -> Void
 
     var body: some View {
-        HStack(spacing: signature.beats > 7 ? 4 : 8) {
-            ForEach(0..<signature.beats, id: \.self) { pulse in
-                Circle()
-                    .fill(fill(for: pulse))
-                    .frame(width: size(for: pulse), height: size(for: pulse))
-                    .frame(width: 22, height: 22)
+        // 12 pulsos (12/8) têm de caber nos ~280 pt do popover
+        let isCompact = pattern.sounds.count > 7
+        HStack(spacing: isCompact ? 2 : 8) {
+            ForEach(Array(pattern.sounds.enumerated()), id: \.offset) { pulse, sound in
+                Button {
+                    onSelect(pulse)
+                } label: {
+                    PulseDot(sound: sound, isCurrent: pulse == currentPulse)
+                        .frame(width: isCompact ? 21 : 24, height: 24)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .help(Text("Carrega para mudar o som deste tempo"))
+                .accessibilityLabel(Text("Tempo \(pulse + 1)"))
+                .accessibilityValue(Self.soundName(sound))
+                .accessibilityHint(Text("Carrega para mudar o som deste tempo"))
+                .accessibilityAddTraits(pulse == currentPulse ? .isSelected : [])
             }
         }
         .frame(height: 24)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text("Tempo"))
-        .accessibilityValue(Text(verbatim: currentPulse.map { "\($0 + 1)/\(signature.beats)" } ?? "–"))
     }
 
-    private func size(for pulse: Int) -> CGFloat {
-        if pulse == 0 { return 22 }
-        return signature.isGroupStart(pulse) ? 16 : 11
+    private static func soundName(_ sound: PulseSound) -> Text {
+        switch sound {
+        case .accent: Text("Acento")
+        case .beat: Text("Tempo forte")
+        case .weakBeat: Text("Tempo fraco")
+        case .silent: Text("Silêncio")
+        }
+    }
+}
+
+private struct PulseDot: View {
+    let sound: PulseSound
+    let isCurrent: Bool
+
+    var body: some View {
+        if sound == .silent {
+            Circle()
+                .strokeBorder(isCurrent ? AnyShapeStyle(.tint) : AnyShapeStyle(.tertiary), lineWidth: 1.5)
+                .frame(width: 11, height: 11)
+        } else {
+            Circle()
+                .fill(fill)
+                .frame(width: size, height: size)
+        }
     }
 
-    private func fill(for pulse: Int) -> AnyShapeStyle {
-        guard pulse == currentPulse else { return AnyShapeStyle(.quaternary) }
-        return pulse == 0 ? AnyShapeStyle(.orange) : AnyShapeStyle(.tint)
+    private var size: CGFloat {
+        switch sound {
+        case .accent: 22
+        case .beat: 16
+        case .weakBeat, .silent: 11
+        }
+    }
+
+    private var fill: AnyShapeStyle {
+        guard isCurrent else { return AnyShapeStyle(.quaternary) }
+        return sound == .accent ? AnyShapeStyle(.orange) : AnyShapeStyle(.tint)
     }
 }
 
 #Preview("Indicador 7/8") {
-    BeatIndicatorView(signature: .sevenEight, currentPulse: 2)
+    BeatIndicatorView(pattern: BeatPattern(defaultFor: .sevenEight), currentPulse: 2, onSelect: { _ in })
+        .padding()
+}
+
+#Preview("Padrão com silêncio") {
+    BeatIndicatorView(pattern: BeatPattern(sounds: [.accent, .silent, .beat, .weakBeat]), currentPulse: 1, onSelect: { _ in })
         .padding()
 }
 

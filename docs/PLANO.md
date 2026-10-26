@@ -152,6 +152,7 @@ guitar-app/
 - O BPM conta **pulsos do denominador** (em 6/8, colcheias). `TimeSignature.grouping` define os acentos secundários (6/8 = 3+3, 7/8 = 2+2+3, 12/8 = 3+3+3+3). Quatro sons: acento (1500 Hz), início de grupo (1000 Hz), pulso dentro do grupo (1000 Hz, mais baixo), subdivisão (800 Hz).
 - Clique n em `round(âncora + n × intervalo)`; mudanças de BPM/compasso/subdivisão re-ancoram no pulso seguinte. Testado offline: 60 s a 120 BPM e 10 min a 113 BPM/44,1 kHz com deriva zero, buffers de tamanho variável.
 - Atalho: espaço para tocar/parar.
+- Som por pulso editável (`BeatPattern`): carregar numa bola do indicador alterna acento → tempo → fraco → silêncio; mudar de compasso repõe o padrão por defeito.
 
 **Aceitação:** sem deriva audível ao fim de 10 minutos; mudar o BPM a meio não provoca cliques fora de tempo.
 
