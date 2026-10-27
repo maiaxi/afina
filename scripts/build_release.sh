@@ -30,17 +30,21 @@ test -d "$APP"
 
 # Assinatura ad-hoc pela ordem recomendada pelo Sparkle (de dentro para fora).
 # Sem Developer ID, "-" é a única identidade; o Sparkle valida as atualizações pela assinatura EdDSA.
+#
+# Sem hardened runtime (`-o runtime`): com ele, a validação de bibliotecas exige o mesmo Team ID
+# na app e no Sparkle.framework, e assinaturas ad-hoc não têm Team ID — a app nem arrancava.
+# Ao passar para Developer ID + notarização, voltar a pôr `-o runtime` em todas as linhas.
 SPARKLE="$APP/Contents/Frameworks/Sparkle.framework/Versions/B"
-codesign -f -s - -o runtime "$SPARKLE/XPCServices/Installer.xpc"
-codesign -f -s - -o runtime --preserve-metadata=entitlements "$SPARKLE/XPCServices/Downloader.xpc"
-codesign -f -s - -o runtime "$SPARKLE/Autoupdate"
-codesign -f -s - -o runtime "$SPARKLE/Updater.app"
-codesign -f -s - -o runtime "$APP/Contents/Frameworks/Sparkle.framework"
+codesign -f -s - "$SPARKLE/XPCServices/Installer.xpc"
+codesign -f -s - --preserve-metadata=entitlements "$SPARKLE/XPCServices/Downloader.xpc"
+codesign -f -s - "$SPARKLE/Autoupdate"
+codesign -f -s - "$SPARKLE/Updater.app"
+codesign -f -s - "$APP/Contents/Frameworks/Sparkle.framework"
 
 # Entitlements com as variáveis do Xcode já resolvidas, tal como ficaram na build
 ENTITLEMENTS="$OUT/Afina.entitlements"
 codesign -d --entitlements - --xml "$APP" > "$ENTITLEMENTS"
-codesign -f -s - -o runtime --entitlements "$ENTITLEMENTS" "$APP"
+codesign -f -s - --entitlements "$ENTITLEMENTS" "$APP"
 codesign --verify --deep --strict "$APP"
 
 # DMG com atalho para Aplicações
