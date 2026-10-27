@@ -1,0 +1,60 @@
+name: Release
+
+# Publica uma release quando se envia uma tag vX.Y.Z:
+#   git tag v0.2.0 && git push origin v0.2.0
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: write
+
+env:
+  SPARKLE_VERSION: 2.10.0
+
+jobs:
+  release:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # o número da build é o nº de commits
+
+      - name: Versão e build
+        id: version
+        run: |
+          echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          echo "build=$(git rev-list --count HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Testes do AfinaCore
+        run: swift test --package-path Packages/AfinaCore
+
+      - name: Build, assinatura ad-hoc e DMG
+        id: build
+        run: echo "dmg=$(scripts/build_release.sh '${{ steps.version.outputs.version }}' '${{ steps.version.outputs.build }}' | tail -1)" >> "$GITHUB_OUTPUT"
+
+      - name: Ferramentas do Sparkle
+        run: |
+          mkdir -p "$RUNNER_TEMP/sparkle"
+          gh release download "$SPARKLE_VERSION" -R sparkle-project/Sparkle -p "Sparkle-$SPARKLE_VERSION.tar.xz" -D "$RUNNER_TEMP/sparkle"
+          tar -xf "$RUNNER_TEMP/sparkle/Sparkle-$SPARKLE_VERSION.tar.xz" -C "$RUNNER_TEMP/sparkle"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Assinatura EdDSA e appcast
+        run: |
+          SIGNATURE=$(echo "$SPARKLE_PRIVATE_KEY" | "$RUNNER_TEMP/sparkle/bin/sign_update" --ed-key-file - "${{ steps.build.outputs.dmg }}")
+          scripts/make_appcast.sh '${{ steps.version.outputs.version }}' '${{ steps.version.outputs.build }}' \
+            "${{ steps.build.outputs.dmg }}" "$SIGNATURE" > build/release/appcast.xml
+          cat build/release/appcast.xml
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+
+      - name: Publicar release
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            "${{ steps.build.outputs.dmg }}" build/release/appcast.xml \
+            --title "Afina ${{ steps.version.outputs.version }}" \
+            --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}

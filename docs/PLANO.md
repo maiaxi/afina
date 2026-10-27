@@ -20,7 +20,8 @@ App nativa de macOS para músicos: **afinador** e **metrónomo**, a viver na bar
 | Persistência | `UserDefaults`/`@AppStorage` + JSON `Codable` para afinações personalizadas | Pouco estado, não justifica SwiftData |
 | Estrutura | Projeto Xcode (app) + Swift Package local `AfinaCore` (lógica) | A lógica testa-se com `swift test`, sem UI nem microfone |
 | Projeto Xcode | Gerado com XcodeGen a partir de `project.yml`; o `.xcodeproj` também é versionado | Diffs legíveis, sem conflitos no `project.pbxproj`; abre-se no Xcode sem instalar nada |
-| Dependências externas | Nenhuma | Atalhos globais feitos com Carbon `RegisterEventHotKey` em vez de `KeyboardShortcuts`: funciona com sandbox, sem permissão de Acessibilidade |
+| Dependências externas | Só o **Sparkle 2.10.0** (atualizações, MIT), versão fixa | Atalhos globais feitos com Carbon `RegisterEventHotKey` em vez de `KeyboardShortcuts`: funciona com sandbox, sem permissão de Acessibilidade |
+| Distribuição | GitHub Releases (repo público `maiaxi/afina`), DMG universal, assinatura **ad-hoc** + EdDSA do Sparkle; licença GPL-3.0 | Sem conta paga da Apple por agora: aviso do Gatekeeper só na 1.ª abertura. Trocar para Developer ID + notarização quando houver conta |
 
 ### Parâmetros iniciais do afinador
 - Sample rate: o do dispositivo (normalmente 48 kHz); nada de hardcoded.
@@ -193,9 +194,10 @@ guitar-app/
 - [ ] Widget de macOS / Control Center
 
 ### Fase 9 — Distribuição
-- [ ] Assinatura com Developer ID e notarização (`notarytool`)
-- [ ] DMG para download direto; Sparkle para atualizações **ou** Mac App Store (decidir)
-- [ ] Página simples (pode ser um README bem feito + GitHub Releases)
+- [ ] Assinatura com Developer ID e notarização (`notarytool`) — adiado: sem conta paga; por agora assinatura ad-hoc
+- [x] DMG para download direto; Sparkle para atualizações (appcast como asset de cada release, `releases/latest/download/appcast.xml`)
+- [x] Página simples: README com instruções de instalação + GitHub Releases
+- [x] CI (testes + build em cada push) e release automática por tag `vX.Y.Z`
 
 ---
 

@@ -19,6 +19,9 @@ settings:
 packages:
   AfinaCore:
     path: Packages/AfinaCore
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    exactVersion: 2.10.0
 targets:
   Afina:
     type: application
@@ -29,6 +32,7 @@ targets:
           - "**/.gitkeep"
     dependencies:
       - package: AfinaCore
+      - package: Sparkle
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.joaomaia.Afina

@@ -244,12 +244,32 @@
         }
       }
     },
+    "As atualizações estão desligadas nas builds de desenvolvimento.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updates are turned off in development builds."
+          }
+        }
+      }
+    },
     "Atalhos": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Shortcuts"
+          }
+        }
+      }
+    },
+    "Atualizações": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updates"
           }
         }
       }
@@ -871,6 +891,26 @@
         }
       }
     },
+    "Procurar agora": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check now"
+          }
+        }
+      }
+    },
+    "Procurar atualizações automaticamente": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatically check for updates"
+          }
+        }
+      }
+    },
     "Repor acentos": {
       "localizations": {
         "en": {
@@ -1066,6 +1106,16 @@
         }
       },
       "extractionState": "manual"
+    },
+    "Versão %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version %@"
+          }
+        }
+      }
     },
     "Volume": {
       "localizations": {

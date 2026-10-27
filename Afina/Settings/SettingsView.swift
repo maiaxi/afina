@@ -43,8 +43,39 @@ struct GeneralSettingsView: View {
                 Text(verbatim: "C D E F G A B").tag(NoteNotation.english)
                 Text(verbatim: "Dó Ré Mi Fá Sol Lá Si").tag(NoteNotation.latin)
             }
+
+            UpdatesSection(updater: model.updater)
         }
         .formStyle(.grouped)
+    }
+}
+
+private struct UpdatesSection: View {
+    @Bindable var updater: AppUpdater
+
+    private var version: String {
+        let info = Bundle.main.infoDictionary
+        let short = info?["CFBundleShortVersionString"] as? String ?? "?"
+        let build = info?["CFBundleVersion"] as? String ?? "?"
+        return "\(short) (\(build))"
+    }
+
+    var body: some View {
+        Section {
+            Toggle("Procurar atualizações automaticamente", isOn: $updater.automaticallyChecksForUpdates)
+            LabeledContent {
+                Button("Procurar agora", action: updater.checkForUpdates)
+            } label: {
+                Text("Versão \(version)")
+            }
+        } header: {
+            Text("Atualizações")
+        } footer: {
+            if !updater.isEnabled {
+                Text("As atualizações estão desligadas nas builds de desenvolvimento.")
+            }
+        }
+        .disabled(!updater.isEnabled)
     }
 }
 

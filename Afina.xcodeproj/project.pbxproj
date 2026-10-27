@@ -10,9 +10,11 @@
 		05E0EFC722F79223EB6DB9E8 /* NoteDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F440B1DBFD05E9A51E87313B /* NoteDisplayView.swift */; };
 		094BDF2ADB3749083B06780D /* TuningsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9581E86BD1156B1094C3D95 /* TuningsSettingsView.swift */; };
 		113B51D567ED19EF266B15B2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3826E1708B058637FFBC5AD7 /* Localizable.xcstrings */; };
+		15963BE7ED724BF93236ECA9 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 85A42A9EE04F1A9B7DCFECDD /* Sparkle */; };
 		1C35211F01BDA5AF99467DE8 /* InputLevelMeterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C695FD5B562E5B1D4130DEC8 /* InputLevelMeterView.swift */; };
 		2A3B975023F5BF4B414FDF4F /* GlobalShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C69BFA85F83EDDC783A9617 /* GlobalShortcut.swift */; };
 		380A782FF5C09F8CD46E321C /* TunerSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4D87F46182BF8133E85C72 /* TunerSectionView.swift */; };
+		3F7EE0B840418D94B8E9A3E8 /* AppUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AE009C983E8B5A0A211A74 /* AppUpdater.swift */; };
 		42E691DCFEA79A0C8FEAA187 /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4CC49B448843EB50AC9396 /* TunerView.swift */; };
 		6511D903BDE7A2F27FD8A6D9 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 20778489139FC43CE12CFFC4 /* InfoPlist.xcstrings */; };
 		6DEB7FA457F0A3F1F5652BC7 /* MetronomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F40DE3ABAD2B6A6DA72CAE /* MetronomeView.swift */; };
@@ -44,6 +46,7 @@
 		3826E1708B058637FFBC5AD7 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		3C69BFA85F83EDDC783A9617 /* GlobalShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShortcut.swift; sourceTree = "<group>"; };
 		66F57C58DBA8F5E8732639CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		75AE009C983E8B5A0A211A74 /* AppUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdater.swift; sourceTree = "<group>"; };
 		7F7853078C965F3B46AC3EB1 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
 		84802EC527E6BE50576221E4 /* ShortcutsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsSettingsView.swift; sourceTree = "<group>"; };
 		8CDAF90FA86CA52B84A1A4B4 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
@@ -71,6 +74,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD884710DEF95F0298F3FDC7 /* AfinaCore in Frameworks */,
+				15963BE7ED724BF93236ECA9 /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,6 +94,7 @@
 				3CAE17236E5D0770D6481CFD /* Settings */,
 				5F318C46FBDC032BDFB2FB84 /* Shortcuts */,
 				42E951035BD5E34EAE8F3204 /* Tuner */,
+				FCC432C194899DC3296F9C43 /* Updates */,
 			);
 			path = Afina;
 			sourceTree = "<group>";
@@ -175,6 +180,14 @@
 			path = Packages;
 			sourceTree = "<group>";
 		};
+		FCC432C194899DC3296F9C43 /* Updates */ = {
+			isa = PBXGroup;
+			children = (
+				75AE009C983E8B5A0A211A74 /* AppUpdater.swift */,
+			);
+			path = Updates;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -193,6 +206,7 @@
 			name = Afina;
 			packageProductDependencies = (
 				F78150C9EDE57FFF759D2B69 /* AfinaCore */,
+				85A42A9EE04F1A9B7DCFECDD /* Sparkle */,
 			);
 			productName = Afina;
 			productReference = 18BC3D4F843CC20C0497B384 /* Afina.app */;
@@ -223,6 +237,7 @@
 			mainGroup = 0BA1F83F8B9413BF2530AFE3;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				A6A2B522F47C886835BD0432 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				3D064A1CB8E2FDE124E4237F /* XCLocalSwiftPackageReference "Packages/AfinaCore" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -255,6 +270,7 @@
 			files = (
 				73F78E7E328B7DACCD11BE9F /* AfinaApp.swift in Sources */,
 				D8FBEB47DF748F34448E2C5D /* AppModel.swift in Sources */,
+				3F7EE0B840418D94B8E9A3E8 /* AppUpdater.swift in Sources */,
 				B4371B7CD484EA165FBB86A0 /* CentsMeterView.swift in Sources */,
 				CBF0A03E7F906B69E50238D0 /* GlobalHotKeyCenter.swift in Sources */,
 				2A3B975023F5BF4B414FDF4F /* GlobalShortcut.swift in Sources */,
@@ -487,7 +503,23 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		A6A2B522F47C886835BD0432 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = exactVersion;
+				version = 2.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		85A42A9EE04F1A9B7DCFECDD /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A6A2B522F47C886835BD0432 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
 		F78150C9EDE57FFF759D2B69 /* AfinaCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AfinaCore;

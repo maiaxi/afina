@@ -8,6 +8,7 @@ import Observation
 final class AppModel {
     let tuner: TunerViewModel
     let metronome: MetronomeViewModel
+    let updater = AppUpdater()
 
     /// Mostrar o ícone na Dock (por defeito a app vive só na barra de menus).
     var showInDock: Bool {

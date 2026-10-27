@@ -22,6 +22,19 @@ Afinador e metrónomo para macOS, sempre à mão na barra de menus.
 - Atalhos de teclado globais
 - Registo de prática, gravador e detetor de acordes
 
+## Instalar
+
+1. Descarrega o `Afina-<versão>.dmg` da [última release](https://github.com/maiaxi/afina/releases/latest).
+2. Abre o DMG e arrasta o **Afina** para **Aplicações**.
+3. Na primeira abertura, o macOS avisa que não consegue verificar o programador (a app ainda não é assinada com Developer ID nem notarizada pela Apple). Para a abrir:
+   - abre a app uma vez e fecha o aviso;
+   - vai a **Definições do Sistema → Privacidade e Segurança** e, ao fundo, carrega em **Abrir mesmo assim**;
+   - confirma com a tua palavra-passe.
+
+   Só é preciso fazer isto uma vez.
+
+As versões seguintes chegam por **atualização automática** (Sparkle): a app procura novas versões nas releases do GitHub e instala-as quando aceitas. Podes desligar isto ou procurar manualmente em **Definições → Geral → Atualizações**.
+
 ## Requisitos
 
 - macOS 15 (Sequoia) ou mais recente
@@ -52,6 +65,19 @@ A lógica (modelo musical, deteção de pitch, motor do metrónomo) vive no pack
 swift test --package-path Packages/AfinaCore
 ```
 
+## Publicar uma versão
+
+As releases são feitas pelo GitHub Actions ([`release.yml`](.github/workflows/release.yml)) quando se envia uma tag:
+
+```bash
+git tag v0.2.0
+git push origin v0.2.0
+```
+
+O workflow corre os testes, compila em Release (universal), assina ad-hoc, cria o DMG, assina-o com a chave EdDSA do Sparkle (segredo `SPARKLE_PRIVATE_KEY`) e publica a release com o `appcast.xml`. O número da build é o número de commits, por isso cresce sempre.
+
+Para testar localmente: `scripts/build_release.sh 0.2.0 999`.
+
 ## Arquitetura
 
 ```
@@ -72,6 +98,8 @@ Mais detalhe em [`docs/PLANO.md`](docs/PLANO.md). Convenções de código e regr
 
 O áudio do microfone é processado apenas localmente e só enquanto o afinador está visível. Nada é gravado nem enviado para lado nenhum.
 
+A única ligação à rede é a verificação de atualizações, que descarrega o `appcast.xml` das releases do GitHub (pode ser desligada nas Definições).
+
 ## Licença
 
-A definir.
+[GPL-3.0](LICENSE). Usa o [Sparkle](https://sparkle-project.org) (licença MIT) para as atualizações.
